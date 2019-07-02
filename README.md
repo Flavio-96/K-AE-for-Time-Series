@@ -13,4 +13,4 @@ Time series classification .... TODO
 - TwoLeadECG
 
 ## Feature selection in unsupervised learning
-[scikit-featureSource](https://github.com/jundongl/scikit-featureSource)
+[scikit-feature](https://github.com/jundongl/scikit-feature)
