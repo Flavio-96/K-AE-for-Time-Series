@@ -1,7 +1,10 @@
 # Progetto-Data-science
 Time series classification .... TODO
 
+
 ## Datasets
+
+Time series are **not multivariate**
 - fordA
 - fordB
 - ECG5000
