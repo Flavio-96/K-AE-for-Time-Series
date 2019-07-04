@@ -1,2 +1,6 @@
 
 env/
+
+\.vscode/
+
+scripts/__pycache__/

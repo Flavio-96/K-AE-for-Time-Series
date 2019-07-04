@@ -6,7 +6,6 @@ import numpy as np
 # richiesto dalle funzioni extract_feature
 # Se qualcosa non vi è chiara, basta lanciarla e vedere l'output
 
-
 #Prende in input il path del file che volete convertire nel formato preposto
 def adaptTimeSeries(path):
     with open(path, 'r') as csvFile:
@@ -33,7 +32,6 @@ def adaptTimeSeries(path):
         series = pd.Series((i for i in listOfClass))
         return df,series
 
-
 # Questa funzione vi permette di unire i file di testing e training nel caso ne aveste bisogno
 # Basterà passare solamente il nome del dataset che vi interessa, tipo ECG5000, ECG200...
 def mergeTSV(fileName):
@@ -41,7 +39,7 @@ def mergeTSV(fileName):
     index =["TRAIN","TEST"]
     for value in index:
         # Ovviamente cambiate il path
-        with open("C:/Users/Donato/Desktop/UCRArchive_2018/"+fileName+"/"+fileName+"_"+ value+".tsv", 'r') as csvFile:
+        with open("../data/UCRArchive_2018/"+fileName+"/"+fileName+"_"+ value+".tsv", 'r') as csvFile:
             reader = csv.reader(csvFile)
             for row in reader:
                 for i in range(0,len(row)):
