@@ -3,3 +3,9 @@ tsfresh
 matplotlib
 numpy
 pandas
+Pillow
+scikit-learn
+scipy
+six
+sklearn
+tensorflow
