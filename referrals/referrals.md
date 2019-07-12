@@ -19,3 +19,6 @@
 - [Autoencoders](https://ai-odyssey.com/2017/02/07/autoencoders%E2%80%8A/)
 - [Latent space](https://ai-odyssey.com/2017/02/24/latent-space-visualization%E2%80%8A/)
 - [Embedding](https://towardsdatascience.com/neural-network-embeddings-explained-4d028e6f0526)
+### Top Articoles
+- [LSTM - colah](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)
+- [The Unreasonable Effectiveness of Recurrent Neural Networks](http://karpathy.github.io/2015/05/21/rnn-effectiveness/)

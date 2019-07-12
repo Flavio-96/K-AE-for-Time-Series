@@ -9,3 +9,4 @@ scipy
 six
 sklearn
 tensorflow
+tensorflow_probability
