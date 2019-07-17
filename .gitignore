@@ -6,3 +6,5 @@ env/
 scripts/__pycache__/
 
 jupyter/\.ipynb_checkpoints/Autoencoder_for_time_series-checkpoint\.ipynb
+
+*.tsv#
