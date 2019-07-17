@@ -1,6 +1,7 @@
 import pandas as pd
 
-def loadData(direc, dataset, perm = True, ratio_train = 0.8):
+
+def loadData(direc, dataset, perm=True, ratio_train=0.8):
     datadir = direc + '/' + dataset + '/' + dataset
     data_train = np.genfromtxt(datadir + '_TRAIN.tsv', delimiter='\t')
     data_test_val = np.genfromtxt(datadir + '_TEST.tsv', delimiter='\t')[:-1]
@@ -13,3 +14,13 @@ def loadData(direc, dataset, perm = True, ratio_train = 0.8):
     else:
         ind = range(0, N)
     return data[ind[:ind_cut], 1:], data[ind[ind_cut:], 1:], data[ind[:ind_cut], 0], data[ind[ind_cut:], 0]
+
+
+def outlier_annihilation(dataset):
+    df = pd.DataFrame(dataset)
+    for col in df:
+        low_threshold = df[col].quantile(0.03)
+        high_threshold = df[col].quantile(0.97)
+        df.loc[df[col] < low_threshold, col] = low_threshold
+        df.loc[df[col] > high_threshold, col] = high_threshold
+    return df.to_numpy()
