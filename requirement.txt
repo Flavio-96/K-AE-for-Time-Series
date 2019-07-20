@@ -10,3 +10,4 @@ six
 sklearn
 tensorflow
 tensorflow_probability
+dtaidistance
