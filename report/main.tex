@@ -1,0 +1,37 @@
+\documentclass[12pt]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{biblatex}
+\usepackage{amsmath}
+\usepackage{gensymb}
+\usepackage[english]{babel}
+\usepackage[toc, page]{appendix}
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{listings}
+
+\addbibresource{riferimenti.bib}
+\graphicspath{{images/}}
+
+\title{Analisi Time Series}
+\author{De Stefano Manuel, Esposito Flavio, Iannone Emanuele}
+\date{Luglio 2019}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+% capitolo 1
+\chapter{Cap1}
+\input{capitoli/1.tex}
+
+% bibliografia
+\addcontentsline{toc}{chapter}{Bibliografia}
+\printbibliography
+
+\end{document}
