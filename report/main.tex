@@ -5,10 +5,9 @@
 \usepackage{biblatex}
 \usepackage{amsmath}
 \usepackage{gensymb}
-\usepackage[english]{babel}
+\usepackage[italian]{babel}
 \usepackage[toc, page]{appendix}
-\usepackage{minted}
-\usepackage{hyperref}
+%\usepackage{hyperref}
 \usepackage{caption}
 \usepackage{float}
 \usepackage{listings}
@@ -23,12 +22,26 @@
 \begin{document}
 
 \maketitle
-
 \tableofcontents
 
 % capitolo 1
-\chapter{Cap1}
-\input{capitoli/1.tex}
+\chapter{Introduzione}
+\input{capitoli/1_intro.tex}
+
+\chapter{Dataset}
+\input{capitoli/2_dataset.tex}
+
+\chapter{Autoencoder}
+\input{capitoli/3_autoencoder.tex}
+
+\chapter{Dynamic Time Warping}
+\input{capitoli/4_dtw.tex}
+
+\chapter{Analisi comparativa}
+\input{capitoli/5_comparison.tex}
+
+\chapter{Conclusioni}
+\input{capitoli/6_conclusioni.tex}
 
 % bibliografia
 \addcontentsline{toc}{chapter}{Bibliografia}
