@@ -1,16 +1,148 @@
+\section{Il contesto}
+Una \textbf{time series}\footnote{Nel seguito verrà usato anche \textit{TS}} (o serie temporale) è una serie di dati ordinati nel tempo. Tipicamente, i dati sono presi ad intervalli di tempo regolari. Alcuni esempi sono gli elettrocardiogrammi, l'andamento delle maree, i valori azionari.\\
++++Esempio di un plot di un TS+++\\
+Le TS, quindi, sono molti simili a dei segnali, quindi analizzabili sia in dominio del tempo che in dominio della frequenza.\\
+\\
+L'\textbf{analisi di time series} si occupa di analizzare questi dati per estrarre informazioni statisticamente rilevanti per diversi scopi:
+\begin{itemize}
+	\item \textbf{Previsioni}, per prevedere andamento di alcuni eventi nel futuro, come le azioni in borsa, oscillazioni della terra, tramite un modello statistico;
+	\item \textbf{Stime}, per approssimare l'informazione portata da segnali di vario genere;
+	\item \textbf{Anomaly detection}, per identificare alcuni pattern ricorrenti sospetti.
+\end{itemize}
+Per portare a termine questi scopi, i principali task sulle TS sono:
+\begin{itemize}
+	\item \textbf{Classificazione}, che consiste nella costruzione di un modello che apprende dai dati (le TS) il modo in cui assegnare a ciascuna di loro una label. Il modello può essere basato su SVM, k-NN, reti neurali, regressione o alberi di decisione. L'apprendimento è di tipo supervisionato, quindi sono necessarie delle label assegnate ai dati di addestramento;
+	\item \textbf{Clustering}, che consiste nel partizionare un insieme di TS a seconda della loro similarità. Bisogna dapprima scegliere una metrica di similarità (o distanza), come può essere la distanza Euclidea o la tecnica del DTW\footnote{Dynamic Time Warping}, e poi un algoritmo di clustering, come può essere k-Means o DBSCAN. L'apprendimento è di tipo non supervisionato, quindi non sono necessarie delle label assegnate ai dati di addestramento.
+\end{itemize}
+Analizzare le TS, a differenza dell'analisi di altri tipi di dati, presenta qualche difficoltà:
+\begin{itemize}
+	\item Ogni singola misurazione della TS è memorizzata in una colonna del dataset, quindi TS con un \textbf{alto numero di misurazioni} comporta un forte aumento della sua dimensionalità, rendendo lunga la sua fase di training e creando modelli non performanti\footnote{Questo problema è noto come \textbf{curse of dimensionality}};
+	\item E' difficile trovare una metrica di similarità che sia \textit{valida}, ovvero che ritorni un valore alto di similarità per le sole TS effettivamente simili, ed \textit{efficiente}, ovvero che il suo tempo di calcolo sia accettabile;
+	\item Alcune TS di una certa tipologia potrebbero essere di \textbf{lunghezza differente}, andando a danneggiare di molto le performance del modello.
+\end{itemize}
+Per risolvere il problema della dimensionalità bisognerebbe usare tecniche di \textbf{feature extranction and selection}, in modo tale da far allenare i modelli su un insieme ridotto di feature rilevanti oppure trasformare l'input (la singola TS) in un "formato ridotto" che ne preserva le caratteristiche.\\
+Per risolvere il problema della metrica di similarità bisognerebbe ricorrere a delle funzioni di distanza che tengono conto della natura delle TS.\\
+E' possibile risolvere il problema della lunghezza usando opportune tecniche di feature selection oppure metriche di similarità ad hoc per le TS.
+
 \section{Il problema}
-Cos'è una time series
-Casi d'uso
-Clustering e classificazione di time series: perché lo si fa
-Il problema della dimensioanlità (TS hanno troppe feature)
-Formalizzazione del nostro problema: clustering di time series con k-means
+Si vuole compiere del \textbf{clustering} di alcuni dataset di TS al fine di \textbf{accomunare quelle simili}.\\
+Le TS potrebbero portare con sè delle label rappresentanti la loro classe di appartenenza, da ingnorare ai fini del clustering in sè, essendo l'apprendimento di tipo non supervisionato. Esse, saranno comunque usate per validare esternamente i risultati ottenuti dall'algoritmo di clustering.\\
+Inoltre, si vuole che ciascun dataset possieda solo TS di lunghezza uguale.
 
 \section{Stato dell'arte}
+CHE SCRIVIAMO??
 
 \section{Soluzione proposta}
-Descrivere i due approcci trovati per affrontare il problema: con autoencoder e con il DTW
-Linguaggio scelto e librerie
-Descrivere bene le metriche che si useranno per valutare i risultati
+Per affrontare il problema descritto vengono adottati due approcci abbastanza differenti:
+\begin{itemize}
+	\item \textbf{Autoencoder + k-Means}, perché è stato scelto e cosa risolve;
+	\item \textbf{DTW + DBSCAN}, perché e cosa risolve.
+\end{itemize}
+Per realizzare queste soluzioni è stato scelto il linguaggio Python per via dell'alto supporto fornito dalle sue libreria, quali \textit{Scikit-Learn}, \textit{NumPy}, \textit{Matplotlib} e \textit{Pandas}. Il codice è stato inserito in notebook \textbf{Jupyter}, così da poter visualizzare subito i risultati di alcuni snipper di codice, di rieseguirli velocemente e di immergere anche dei commenti in Markdown.\\
+\\
+Per poter valutare i risultati del clustering si adotteranno misure interne e misure esterne. Esse, oltre a stabilità la qualità dell'algoritmo di clustering, servono anche per trovare il numero di cluster ottimale nel caso in cui l'algoritmo non è in grado di stabilirlo da sè, come nel caso di k-Means.
+
+\subsection{Misure di validazione interne}
+Una \textbf{misura di validazione interna} si occupa di validare i risultati di un algoritmo di clustering guardando quanto bene ha accomunato (messi in uno stesso cluster) item simili e quanto bene ha separato (messi in cluster diversi) item diversi.\\
+In altre parole, si vuole minimizzare la distanza intra-cluster e massimizzare la distanza inter-cluster\footnote{Questa distanza è calcolata a seconda della metrica di distanza scelta}.\\
+\\
+La \textbf{compactness} (o cohesion) misura quanto bene sono vicini gli item in ciascun cluster ed è, tipicamente, la somma dei quadrati di tutte le distanze degli item di un cluster dal relativo centroide. E' bene minimizzarla il più possibile.\\
+La \textbf{separation} misura quanto bene sono distanziati gli item in diversi cluster ed è, tipicamente, la somma dei quadrati di tutte le distanze tra tutti i centroidi. E' bene massimizzarla il più possibile.\\
+Una misura di validazione tiene conto sia della compactness che della separation in qualche modo.\\
+\\
+E' bene ricordare che alcuni algoritmi di clustering già hanno come scopo quello di ottimizzare compactness e/o separation, quindi potrebbe capitare che alcuni indici risultino quasi sempre alti, diventando meno rilevanti in quel caso.
+
+\subsubsection{Silhouette Coefficient}
+Il \textbf{Silhouette Coefficient di un item $i$} serve a stabilire quanto bene $i$ è stato assegnato al giusto cluster.\\
+\\
+Sia $i$ un'item e sia $d$ una qualsiasi funzione di distanza. Il Silhouette Coefficient di i, $S(i)$ si calcola nel seguente modo:
+\begin{align}
+	S(i) = \frac{b_i - a_i}{max(a_i, b_i)}
+\end{align}
+dove:
+\begin{enumerate}[(i)]
+	\item $$ a_i = \frac{1}{|C|-1}\sum_{i\ne j\in C} d(i,j)$$ è la distanza media dell'item i rispetto agli altri item j nello stesso cluster C.\\
+	Più il valore è piccolo, più l'item i è vicino agli altri item dello stesso cluster;
+	\item $$ b_i = \min_{k\ne i} \frac{1}{|C_k|}\sum_{j \in C_k} d(i,j)$$ è la distanza media dell'item i rispetto agli item j nel più vicino cluster\footnote{Anche detto \textit{neighbour cluster}} diverso da quello che contiene i.
+\end{enumerate}
+Si osserva che se $b_i > a_i$, allora $S(i)$ risulterà compreso tra -1 e 0, sintomo di un'assegnazione di i al cluster sbagliato: sarebbe più opportuno assegnarlo al cluster più vicino.\\
+Se $b_i < a_i$, allora $S(i)$ risulterà compreso tra 0 e 1. Più $a_i$ tende a 0, più $S(i)$ tenderà ad 1, sintomo di perfetta assegnazione di i al cluster giusto.\\
+Se $S(i)$ è circa 0 allora l'item non dovrebbe stare in nessuno dei due cluster proposti, e sarebbe quindi opportuno rivalutare il numero di cluster scelti, se non proprio l'algoritmo di clustering stesso.\\
+\\
+E' possibile calcolare il Silhouette Coefficient medio di tutto il clustering. Sia D l'insieme di tutti gli item:
+\begin{align}
+	S = \frac{1}{|D|} \sum_{i \in D} S(i)
+\end{align}
+Più S tende ad 1, migliore è l'assegnazione degli item.\\
+La sua elaborazione può richiedere molto tempo se la metrica di distanza è complessa.
+
+\subsubsection{Dunn Index}
+Il \textbf{Dunn Index} di un clustering misura quanto bene i cluster sono compatti e separati l'uno dall'altro.\\
+\\
+Sia m il numero di cluster, il Dunn Index è calcolabile nel seguente modo:
+\begin{align}
+	D = \frac{\min_{1\le i \le j \le m}\delta(C_i, C_j)}{\max_{1 \le k \le m}(diam(C_k))}
+\end{align}
+dove:
+\begin{enumerate}[(i)]
+	\item $ \delta(C_i, C_j) $ è la separation tra due cluster $C_i$ e $C_j$, calcolata attraverso una qualsiasi metrica di distanza.\\
+	Il numeratore di D considera la più piccola di queste separazioni, escludendo quelle già calcolate;
+	\item $ diam(C_k) $ è una funzione che calcola il \textit{diametro} del cluster $C_k$, ovvero la massima distanza (di qualsiasi tipo) tra due dei suoi item. E' una particolare misura di compactness.
+\end{enumerate}
+Cluster molto grandi hanno una maggiore probabilità di avere un diametro maggiore, e quindi una maggiore probabilità di aumentare il denominatore di $D$, andando a diminuire l'indice. Aumentare di molto il numero di cluster andrà ad aumentare $D$ con alta probabilità.\\
+E' un indice rilevante in dataset molto grandi e/o quando è previsto avere un grande numero di cluster.
+
+\subsubsection{Davies-Bouldin Index}
+Il \textbf{Davies-Bouldin Index} di un clustering misura la media di similarità di ciascun cluster con il suo cluster più simile.\\
+\\
+Sia m il numero di cluster, il Davies-Bouldin Index è calcolabile nel seguente modo:
+\begin{align}
+	DB = \frac{1}{m}\sum_{i=1}^{m}\max_{i \ne j}sim(C_i, C_j)
+\end{align}
+dove:
+\begin{enumerate}[(i)]
+	\item $$ sim(C_i, C_j) =  \frac{c_i + c_j}{d(C_i, C_j)}$$ è una misura di \textit{similarità tra due cluster}.\\
+	$c_i$ è la compactness del cluster $C_i$ calcolata come distanza media di tutti gli item in $C_i$ rispetto al proprio centroide.\\
+	$d(C_i, C_j)$ è la separation tra i cluster $C_i$ e $C_j$, calcolata come distanza tra i rispettivi centroidi.
+\end{enumerate}
+A differenza di altri indici, un buon clustering è rappresentato da un DB tendente a 0. Per minimizzare DB, bisogna rendere i cluster il meno simile possibile, realizzabile minimizzando le compactness di ciascun cluster (i valori $c_i$) oppure massimizzando la separation tra cluster ($d(C_i, C_j)$).\\
+Cluster molto densi e distanti hanno DB minimo.
+
+\subsection{Misure di validazione esterne}
+Una \textbf{misura di validazione interna} si occupa di validare i risultati di un algoritmo di clustering rispetto a delle \textbf{ground truth}\footnote{Verità di base}, ovvero delle informazioni relative ad un altro tipo di clustering o classificazione degli stessi dati non usate per compiere il clustering in esame.\\
+Nelle ground truth, quindi, \textbf{ogni item possiede una classe} (o label), da usare come oracolo.\\
+\\
+A differenza delle misure interne, che si pongono di misurare cluster compatti e separati, le misure esterne si occupano di misurare cluster \textit{fedeli} a delle ground truth. La fedeltà è spesso misurata tramite \textbf{pair counting}\footnote{Conteggio delle coppie}, ovvero contando:
+\begin{itemize}
+	\item Il numero di coppie di item clusterizzati insieme se essi sono della stessa classe. Anche detto numero di \textbf{True Positive} (TP);
+	\item Il numero di coppie di item clusterizzati insieme se essi sono in classi diverse. Anche detto numero di \textbf{False Positive} (FP);
+	\item Il numero di coppie di item NON clusterizzati insieme se essi sono della stessa classe. Anche detto numero di \textbf{False Negative} (FN);
+	\item Il numero di coppie di item NON clusterizzati insieme se essi sono in classi diverse. Anche detto numero di \textbf{True Negative} (TN);
+\end{itemize}
+Chiaramente, come nel task della classificazione, lo scopo generale è quello di massimizzare TP e TN e di minimizzare FP e FN.
+
+\subsubsection{Contingency Matrix}
+La \textbf{Contingency Matrix} riporta la cardinalità delle intersezioni dei cluster con le classi delle ground truth.\\
+L'elemento $a_{ij}$ rappresenta il numero di item della classe i presenti nel cluster j.\\
+Quanti più valori tendenti a 0 ha una colonna, più quel cluster è fedele ad una delle classi. Se il numero di cluster è uguale al numero di classi, è bene che un cluster ne ricopra una e una sola.\\
+++ESEMPIO++\\
+Non essendo un singolo valore, risulta di difficile interpretazione se il numero di cluster/classi aumenta. Allo stesso tempo, è molto utile per dare una prima interpretazione della fedeltà del clustering rispetto alle ground truth.
+
+\subsubsection{Purity}
+La \textbf{Purity} è una misura che stabilisce quanto bene un clustering copra un labelling/clustering di riferimento. Precisamente, misura quanto un cluster contiene elementi di una singola classe.\\
+Per calcolarlo bisogna fare una media del numero di item della classe più diffusa per ciascuna cluster.\\
+\\
+Formalmente, sia C il clustering analizzato, D l'insieme di classi di riferimento, e sia N l'insieme degli item:
+\begin{align}
+	P = \frac{1}{|N|}\sum_{c \in C}\max_{d \in D}|m \cap d|
+\end{align}
+Ogni cluster partecipa alla sommatoria con il numero di item della classe più diffusa al suo interno.\\
+\\
+Non è consigliata con dati sbilanciati poiché sarà sempre alta.
+
+\subsubsection{Adjusted rand index}
+
+\subsubsection{Fowlkes-Mallows}
 
 \section{Struttura del documento}
 Parlare del fatto che verranno mostrati snippet del notebook
