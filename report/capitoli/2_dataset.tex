@@ -1,9 +1,82 @@
 \section{Descrizione}
-Dove sono stati reperiti
-Elenco con dimensioni (dal web)
+Per affrontare questo problema sono stati selezionati alcuni dataset di time series dal sito \url{http://www.timeseriesclassification.com/dataset.php}.\\
+I dataset forniti dal sito sono già divisi in training e test set, ciascuno con un proprio numero di feature (ovvero la lunghezza della time series) uguale per tutti i sample.\\
+Ogni time series ha una sua \textbf{label}, corrispondente ad una classe di riferimento, assengata dall'autore del dataset.\\
+Sono stati scelti di diversi dimensioni e caratteristiche:
+\begin{itemize}
+	\item \textbf{ECG5000}, contenente 5000 elettrocardiogrammi (ECG) ottenuti da pazienti affetti da insufficienza cardiaca. Le classi sono state assegnati per annotazione automatica;
+	\item \textbf{ECG200}, contenente 200 elettrocardiogrammi ottenuti da pazienti affetti da insufficienza cardiaca. Le due classi rappresentano gli ECG di soggetti sani e di soggetti affetti da infarto al miocardio;
+	\item \textbf{ChlorineConcentration}, contenente dati relativi alla presenza di cloro nell'acqua, recuperati usando 166 sensori lungo una rete idraulica per 15 giorni;
+	\item \textbf{FordA}, contenente dati di rumori del motore di autovetture ottenuti sotto normali condizioni d'uso;
+	\item \textbf{FordB}, contenente dati di rumori del motore di autovetture, alcuni ottenuti sotto normali condizioni d'uso, mentre altri sotto condizioni di elevato rumore;
+	\item \textbf{PhalangesOutlinesCorrect}, contenente dati relativi ad outline di falangi, corretti ed errati, ottenuti usando algoritmi di estrazione di outline da immagini di radiografie delle mani;
+	\item \textbf{RefrigerationDevices}, contenente dati relativi al consumo di tre diversi dispositivi di refrigerazione domestici;
+	\item \textbf{TwoLeadECG}, contenente elettrocardiogrammi di due tipi diversi di segnale;
+	\item \textbf{TwoPatterns}, contenente serie temporali generate artificalmente, ciascuna caratterizzata da una coppia di pattern nel segnale: up-up, up-down, down-up e down-down.
+\end{itemize}
 
-\section{Data Cleaning}
-Come abbiamo trovato i problemi (data profiling con pandas)
+\begin{table}[H]
+	\centering
+	\begin{tabularx}{\textwidth}{X c c c c}
+		\hline
+		\textbf{Name} & \textbf{Train size} & \textbf{Test size} & \textbf{Sequence length} & \textbf{Classes} \\
+		\hline
+		\textbf{ECG5000} & 500 & 4500 & 140 & 5\\
+		\textbf{ECG200} & 100 & 100 & 96 & 2\\
+		\textbf{ChlorineConc.} & 476 & 3840 & 166 & 3\\
+		\textbf{FordA} & 3601 & 1320 & 500 & 2\\
+		\textbf{FordB} & 3636 & 810 & 500 & 2\\
+		\textbf{Phalanges} & 1800 & 858 & 80 & 2\\
+		\textbf{Refrigeration} & 375 & 375 & 720 & 3\\
+		\textbf{TwoLeadECG} & 23 & 1139 & 82 & 2\\
+		\textbf{TwoPatterns} & 1000 & 4000 & 128 & 4\\
+	\end{tabularx}
+	\caption{Caratteristiche dei dataset}
+	\label{tab:datasets}
+\end{table}
+
+\section{Data Profiling}
+Attraverso la libreria Python \textit{pandas} è stato possibile fare un po' di data profiling, andando ad osservare meglio nel dettaglio la struttura di questi dataset.\\
+Sono emerse alcune informazioni interessanti:
+\begin{itemize}
+	\item Tipicamente le label sono interi non negativi, che partono da 0 o da 1, ma in alcuni dataset sono presenti \textbf{label negative};
+	\item Le classi di molti dataset sono \textbf{sbilanciate}, ad esempio in ECG5000 ci sono 2919 sample nella classe 1, mentre solo 24 nella classe 5;
+	\item Sono stati identificati molti valori \textbf{outlier}, infatti alcune colonne hanno una distrubuzione di valori più ampia rispetto alle altre, probabilmente dovuti ad errori di misurazione dei sensori;
+	\item Non ci sono \textbf{valori nulli}.
+\end{itemize}
+Lo sbilanciamento è stato individuato facendo il raggruppamento per la colonna 0, ovvero quello della label assegnata ad ogni time series, mentre gli outlier sono stati individuati guardando la media, la deviazione standard e i quartili di ciascuna colonna, oltre che il plot dei dati.\\
+++CELLE RELATIVE AL PROFILING++
+
+Di seguito un riassunto della distribuzione delle classi di ciascun dataset (indipendente dal valore della singola label):
+\begin{table}[H]
+	\centering
+	\begin{tabularx}{\textwidth}{X c c c c c}
+		\hline
+		\textbf{Name} & \textbf{Class 1} & \textbf{Class 2} & \textbf{Class 3} & \textbf{Class 4} & \textbf{Class 5} \\
+		\hline
+		\textbf{ECG5000} & 2919 & 1767 & 96 & 194 & 24\\
+		\textbf{ECG200} & 133 & 67 & / & / & /\\
+		\textbf{ChlorineConc.} & 1000 & 1000 & 2307 & / & /\\
+		\textbf{FordA} & 2394 & 2527 & / & / & /\\
+		\textbf{FordB} & 2185 & 2261 & / & / & /\\
+		\textbf{Phalanges} & 960 & 1698 & / & / & /\\
+		\textbf{Refrigeration} & 250 & 250 & 250 & / & /\\
+		\textbf{TwoLeadECG} & 581 & 581 & / & / & /\\
+		\textbf{TwoPatterns} & 1306 & 1248 & 1245 & 1201 & /\\
+	\end{tabularx}
+	\caption{Distribuzione delle classi dei dataset}
+	\label{tab:labels}
+\end{table}
+
+\subsection{Data Cleaning}
+Forte dei problemi individuati durante il profiling, sono state adottate alcune azioni correttive:
+\begin{itemize}
+	\item Tutte le label sono state modificate in modo tale da essere degli interi positivi che partono da 1 e che si incrementano unariamente. Questa pulizia è stata fatta direttamente sui file dei dataset;
+	\item Il problema dello sbilanciamento delle classi non è stato risolto poiché è una caratteristica intrinseca del dataset, però si è potuto risolvere il problema degli outlier, "tagliando" tutti i dati che andavano al di sotto del 3-percentile e oltre il 97-percentile per poi ricondurli a loro. Questo lavoro è stato fatto per ciascuna colonna di ciascun i dataset. Questa pulizia viene fatta ogni volta che viene caricato il dataset in memoria.\\
+	++CELLE DEL BEFORE/AFTER++
+\end{itemize}
 
 \section{Considerazioni}
-Perché non sono buoni
+Lo sbilanciamento delle classi potrebbe causare non qualche problema nella fase di valutazione del clustering, poiché diventa difficile per l'algoritmo di clustering creare cluster molto piccoli se i dati sono molto simili tra loro.\\
+\\
+Training e test set forniti a priori contenevano dati sbilanciati, quindi è stato deciso di \textbf{ricostruirli in memoria} ogni volta che vengono usati, prima fondendoli e poi dividendoli casualmente con la regola dell'80/20\footnote{80\% dei dati è di train, mentre il restante 20\% è di test} di default.
