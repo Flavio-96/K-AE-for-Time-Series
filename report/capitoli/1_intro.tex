@@ -25,7 +25,7 @@ Analizzare le TS, a differenza dell'analisi di altri tipi di dati, presenta qual
 	\item E' difficile trovare una metrica di similarità che sia \textit{valida}, ovvero che ritorni un valore alto di similarità per le sole TS effettivamente simili, ed \textit{efficiente}, ovvero che il suo tempo di calcolo sia accettabile;
 	\item Alcune TS di una certa tipologia potrebbero essere di \textbf{lunghezza differente}, andando a danneggiare di molto le performance del modello.
 \end{itemize}
-Per risolvere il problema della dimensionalità bisognerebbe usare tecniche di \textbf{feature extranction and selection}, in modo tale da far allenare i modelli su un insieme ridotto di feature rilevanti oppure trasformare l'input (la singola TS) in un "formato ridotto" che ne preserva le caratteristiche.\\
+Per risolvere il problema della dimensionalità bisognerebbe usare tecniche di \textbf{feature extraction and selection}, in modo tale da far allenare i modelli su un insieme ridotto di feature rilevanti oppure trasformare l'input (la singola TS) in un "formato ridotto" che ne preserva le caratteristiche.\\
 Per risolvere il problema della metrica di similarità bisognerebbe ricorrere a delle funzioni di distanza che tengono conto della natura delle TS.\\
 E' possibile risolvere il problema della lunghezza usando opportune tecniche di feature selection oppure metriche di similarità ad hoc per le TS.
 
@@ -35,9 +35,14 @@ Le TS potrebbero portare con sè delle label rappresentanti la loro classe di ap
 Inoltre, si vuole che ciascun dataset possieda solo TS di lunghezza uguale.
 
 \section{Stato dell'arte}
-CHE SCRIVIAMO??
-\textbf{TSFresh}\cite{tsfresh}...\\
-\textbf{TSLearn}\cite{tslearn}...
+L'analisi delle time series è uno studio abbastanza diffuso e in letteratura esistono diversi lavori che hanno dato un importante contributo.\\
+\\
+\textbf{TSFresh}\cite{tsfresh} è una libreria per Python, compatibile con Scikit-Learn, per l'estrazione automatica di feature di time series, ovvero caratteristiche rilevanti delle stesse, come la media, il valore minimo, il numero di picchi, la mediana, ecc. La libreria è anche in grado di assegnare un \textit{valore di rilevanza} alle feature, così da permetterne una selezione delle sole rilevanti. Viene offerto anche un supporto al calcolo parallelo e distribuito.\\
+L'estrazione e selezione delle feature sono un aspetto cruciale nell'analisi delle TS poiché esse permetteno la riduzione della loro dimensionalità, rendendole quindi trattabili.\\
+TSFresh non fornisce alcun modello di classificazione, regressione o clustering, quindi non si sostituisce ad altre librerie di machine learning come Scikit-Learn.\\
+\\
+\textbf{TSLearn}\cite{tslearn} è una libreria per Python scritta in C++ per l'analisi di time series. A differenza di TSFresh, essa offre, tra l'altro, dei modelli di apprendimento ad hoc per le TS. E' in grado di leggere i dataset, di farne del preprocessing, di compiere classificazione e regressione con SVM e clustering, usando metriche di distanza ad hoc per le TS, come il DTW.\\
+Tuttavia, rispetto a TSFresh, è meno matura: ha pochi algoritmi implementati, una documentazione meno ricca, meno contributors e fork.
 
 \section{Soluzione proposta}
 Per affrontare il problema descritto vengono adottati due approcci abbastanza differenti:
