@@ -1,13 +1,82 @@
-@misc{ Qiskit,
-       author = {Gadi Aleksandrowicz and Thomas Alexander and Panagiotis Barkoutsos and Luciano Bello and Yael Ben-Haim and David Bucher and Francisco Jose Cabrera-Hern{\'a}ndez and Jorge Carballo-Franquis and Adrian Chen and Chun-Fu Chen and Jerry M. Chow and Antonio D. C{\'o}rcoles-Gonzales and Abigail J. Cross and Andrew Cross and Juan Cruz-Benito and Chris Culver and Salvador De La Puente Gonz{\'a}lez and Enrique De La Torre and Delton Ding and Eugene Dumitrescu and Ivan Duran and Pieter Eendebak and Mark Everitt and Ismael Faro Sertage and Albert Frisch and Andreas Fuhrer and Jay Gambetta and Borja Godoy Gago and Juan Gomez-Mosquera and Donny Greenberg and Ikko Hamamura and Vojtech Havlicek and Joe Hellmers and {\L}ukasz Herok and Hiroshi Horii and Shaohan Hu and Takashi Imamichi and Toshinari Itoko and Ali Javadi-Abhari and Naoki Kanazawa and Anton Karazeev and Kevin Krsulich and Peng Liu and Yang Luh and Yunho Maeng and Manoel Marques and Francisco Jose Mart{\'\i}n-Fern{\'a}ndez and Douglas T. McClure and David McKay and Srujan Meesala and Antonio Mezzacapo and Nikolaj Moll and Diego Moreda Rodr{\'\i}guez and Giacomo Nannicini and Paul Nation and Pauline Ollitrault and Lee James O'Riordan and Hanhee Paik and Jes{\'u}s P{\'e}rez and Anna Phan and Marco Pistoia and Viktor Prutyanov and Max Reuter and Julia Rice and Abd{\'o}n Rodr{\'\i}guez Davila and Raymond Harry Putra Rudy and Mingi Ryu and Ninad Sathaye and Chris Schnabel and Eddie Schoute and Kanav Setia and Yunong Shi and Adenilton Silva and Yukio Siraichi and Seyon Sivarajah and John A. Smolin and Mathias Soeken and Hitomi Takahashi and Ivano Tavernelli and Charles Taylor and Pete Taylour and Kenso Trabing and Matthew Treinish and Wes Turner and Desiree Vogt-Lee and Christophe Vuillot and Jonathan A. Wildstrom and Jessica Wilson and Erick Winston and Christopher Wood and Stephen Wood and Stefan W{\"o}rner and Ismail Yunus Akhalwaya and Christa Zoufal},
-       title = {Qiskit: An Open-source Framework for Quantum Computing},
-       year = {2019},
-       doi = {10.5281/zenodo.2562110}
+@article{tsfresh,
+	title = {Time Series FeatuRe Extraction on basis of Scalable Hypothesis tests (tsfresh – A Python package)},
+	journal = {Neurocomputing},
+	volume = {307},
+	pages = {72 - 77},
+	year = {2018},
+	issn = {0925-2312},
+	doi = {https://doi.org/10.1016/j.neucom.2018.03.067},
+	url = {http://www.sciencedirect.com/science/article/pii/S0925231218304843},
+	author = {Maximilian Christ and Nils Braun and Julius Neuffer and Andreas W. Kempa-Liehr},
+	keywords = {Feature engineering, Time series, Feature extraction, Feature selection, Machine learning},
+	abstract = {Time series feature engineering is a time-consuming process because scientists and engineers have to consider the multifarious algorithms of signal processing and time series analysis for identifying and extracting meaningful features from time series. The Python package tsfresh (Time Series FeatuRe Extraction on basis of Scalable Hypothesis tests) accelerates this process by combining 63 time series characterization methods, which by default compute a total of 794 time series features, with feature selection on basis automatically configured hypothesis tests. By identifying statistically significant time series characteristics in an early stage of the data science process, tsfresh closes feedback loops with domain experts and fosters the development of domain specific features early on. The package implements standard APIs of time series and machine learning libraries (e.g. pandas and scikit-learn) and is designed for both exploratory analyses as well as straightforward integration into operational data science applications.}
 }
 
-@book{kaye2007introduction,
-  title={An introduction to quantum computing},
-  author={Kaye, Phillip and Laflamme, Raymond and Mosca, Michele and others},
-  year={2007},
-  publisher={Oxford University Press}
+@misc{tslearn,
+	title={tslearn: A machine learning toolkit dedicated to time-series data},
+	author={Tavenard, Romain},
+	year={2017},
+	note={\url{https://github.com/rtavenar/tslearn}}
+}
+
+@book{sklearn_api,
+	author    = {Lars Buitinck and Gilles Louppe and Mathieu Blondel and
+	Fabian Pedregosa and Andreas Mueller and Olivier Grisel and
+	Vlad Niculae and Peter Prettenhofer and Alexandre Gramfort
+	and Jaques Grobler and Robert Layton and Jake VanderPlas and
+	Arnaud Joly and Brian Holt and Ga{\"{e}}l Varoquaux},
+	title = {{API} design for machine learning software: experiences from the scikit-learn
+	project},
+	booktitle = {ECML PKDD Workshop: Languages for Data Mining and Machine Learning},
+	year = {2013},
+	pages = {108--122},
+}
+
+@misc{numpy,
+	author =    {Travis Oliphant},
+	title =     {{NumPy}: A guide to {NumPy}},
+	year =      {2006--},
+	howpublished = {USA: Trelgol Publishing},
+	url = {http://www.numpy.org/},
+	note = {[Online; accessed <today>]}
+}
+
+@article{matplotlib,
+	Author    = {Hunter, J. D.},
+	Title     = {Matplotlib: A 2D graphics environment},
+	Journal   = {Computing in Science \& Engineering},
+	Volume    = {9},
+	Number    = {3},
+	Pages     = {90--95},
+	abstract  = {Matplotlib is a 2D graphics package used for Python for
+	application development, interactive scripting, and publication-quality
+	image generation across user interfaces and operating systems.},
+	publisher = {IEEE COMPUTER SOC},
+	doi       = {10.1109/MCSE.2007.55},
+	year      = 2007
+}
+
+@book{pandas,
+	author    = { Wes McKinney },
+	title     = { Data Structures for Statistical Computing in Python},
+	booktitle = { Proceedings of the 9th Python in Science Conference},
+	pages     = { 51 - 56 },
+	year      = { 2010 },
+	editor    = { St\'efan van der Walt and Jarrod Millman }
+}
+
+@misc{metrics,
+	title = {Clustering - Scikit Learn},
+	howpublished = {\url{https://scikit-learn.org/stable/modules/clustering.html}},
+	note = {Accessed: 2019-07-23}
+}
+
+@article{ari,
+	author = {Yeung, Ka Yee and Ruzzo, Walter},
+	year = {2001},
+	month = {01},
+	pages = {},
+	title = {Details of the Adjusted Rand index and Clustering algorithms Supplement to the paper "An empirical study on Principal Component Analysis for clustering gene expression data" (to appear in Bioinformatics)},
+	volume = {17},
+	journal = {Science}
 }

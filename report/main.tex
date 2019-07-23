@@ -2,7 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
-\usepackage{biblatex}
+\usepackage[backend=bibtex, sorting=none]{biblatex}
 \usepackage{amsmath}
 \usepackage{gensymb}
 \usepackage[italian]{babel}
@@ -14,37 +14,39 @@
 \usepackage{tabularx}
 \usepackage{enumerate}
 
+\nocite{*}
 \addbibresource{riferimenti.bib}
 \graphicspath{{images/}}
 
-\title{Analisi Time Series}
+\title{
+	Analisi Time Series\\
+	\large Progetto di Data Science e Machine Learning
+}
 \author{De Stefano Manuel, Esposito Flavio, Iannone Emanuele}
 \date{Luglio 2019}
 
 \begin{document}
-
 \maketitle
 \tableofcontents
 
-\chapter{Introduzione}
+\chapter{Introduzione} \label{chap:intro}
 \input{capitoli/1_intro.tex}
 
-\chapter{Dataset}
+\chapter{Dataset} \label{chap:dataset}
 \input{capitoli/2_dataset.tex}
 
-\chapter{Autoencoder}
+\chapter{Autoencoder} \label{chap:autoencoder}
 \input{capitoli/3_autoencoder.tex}
 
-\chapter{Dynamic Time Warping}
+\chapter{Dynamic Time Warping} \label{chap:dtw}
 \input{capitoli/4_dtw.tex}
 
-\chapter{Analisi comparativa}
+\chapter{Analisi comparativa} \label{chap:comparison}
 \input{capitoli/5_comparison.tex}
 
-\chapter{Conclusioni}
+\chapter{Conclusioni} \label{chap:conclusioni}
 \input{capitoli/6_conclusioni.tex}
 
-% bibliografia
 \addcontentsline{toc}{chapter}{Bibliografia}
 \printbibliography
 
