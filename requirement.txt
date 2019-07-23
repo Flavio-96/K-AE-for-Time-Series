@@ -11,4 +11,3 @@ sklearn
 tensorflow
 tensorflow_probability
 dtaidistance
-pandoc

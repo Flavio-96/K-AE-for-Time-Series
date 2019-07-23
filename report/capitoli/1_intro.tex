@@ -77,6 +77,7 @@ dove:
 	Più il valore è piccolo, più l'item i è vicino agli altri item dello stesso cluster;
 	\item $$ b_i = \min_{k\ne i} \frac{1}{|C_k|}\sum_{j \in C_k} d(i,j)$$ è la distanza media dell'item i rispetto agli item j nel più vicino cluster\footnote{Anche detto \textit{neighbour cluster}} diverso da quello che contiene i.
 \end{enumerate}
+E' compreso tra -1 e 1, con -1 indicante un clustering totalmente errato, 1 indicante un clustering altamente denso e ben separato e 0 indicante clustering sovrapposti.\\
 Si osserva che se $b_i > a_i$, allora $S(i)$ risulterà compreso tra -1 e 0, sintomo di un'assegnazione di i al cluster sbagliato: sarebbe più opportuno assegnarlo al cluster più vicino.\\
 Se $b_i < a_i$, allora $S(i)$ risulterà compreso tra 0 e 1. Più $a_i$ tende a 0, più $S(i)$ tenderà ad 1, sintomo di perfetta assegnazione di i al cluster giusto.\\
 Se $S(i)$ è circa 0 allora l'item non dovrebbe stare in nessuno dei due cluster proposti, e sarebbe quindi opportuno rivalutare il numero di cluster scelti, se non proprio l'algoritmo di clustering stesso.\\
@@ -117,7 +118,7 @@ dove:
 	$c_i$ è la compactness del cluster $C_i$ calcolata come distanza media di tutti gli item in $C_i$ rispetto al proprio centroide.\\
 	$d(C_i, C_j)$ è la separation tra i cluster $C_i$ e $C_j$, calcolata come distanza tra i rispettivi centroidi.
 \end{enumerate}
-A differenza di altri indici, un buon clustering è rappresentato da un DB tendente a 0. Per minimizzare DB, bisogna rendere i cluster il meno simile possibile, realizzabile minimizzando le compactness di ciascun cluster (i valori $c_i$) oppure massimizzando la separation tra cluster ($d(C_i, C_j)$).\\
+E' compreso tra 0 e 1, ma a differenza di altri indici, un buon clustering è rappresentato da un DB tendente a 0. Per minimizzare DB, bisogna rendere i cluster il meno simile possibile, realizzabile minimizzando le compactness di ciascun cluster (i valori $c_i$) oppure massimizzando la separation tra cluster ($d(C_i, C_j)$).\\
 Cluster molto densi e distanti hanno DB minimo.
 
 \subsection{Misure di validazione esterne}
@@ -158,12 +159,12 @@ Formalmente, sia C il clustering analizzato, L l'insieme di classi di riferiment
 \begin{align}
 	P = \frac{1}{|N|}\sum_{c \in C}\max_{l \in L}|c \cap l|
 \end{align}
+E' compresa tra 0 e 1, con 0 indicante nessuna copertura, e 1 indicante copertura massima.\\
 Ogni cluster partecipa alla sommatoria con il numero di item della classe assolutamente più diffusa al suo interno. Guardando alla Contingency Matrix, si sommano i valori massimi di ciascuna colonna.\\
 \\
 Non è consigliata con classi sbilanciate poiché risulterà facilmente alta per via dell'alta probabilità che un cluster abbia come classe più diffusa quella massima.\\
-\\
 Per ridurre questo effetto negativo si potrebbe pensare di considerare il massimo relativo di ciascun cluster invece che del massimo assoluto: ogni cluster partecipa alla sommatoria con il numero di item della classe relativamente più diffusa al suo interno.\\
-La divisione viene comunque fatta sul numero totale di elementi. Questa misura può essere chiamata \textbf{Purity Relativa}.
+La divisione viene comunque fatta sul numero totale di elementi. Questa misura può essere chiamata \textbf{Purity Relativa}, anche essa compresa tra 0 e 1 e con uguale significato.
 
 \subsubsection{Rand Index e Adjusted Rand Index}
 Il \textbf{Rand index}, o \textbf{Accuracy}, è il rapporto tra il numero di coppie correttamente clusterizzate (ottenuto dalla somma di TP e TN) sul numero di coppie non ordinate totali.\\
@@ -172,6 +173,7 @@ Sia n il numero di item, il Rand Index si calcola nel seguente modo:
 	RI = \frac{TP + TN}{C_2^n}
 \end{align}
 Il numero di coppie non ordinate può anche essere calcolato sommando TP, FP, FN e TN.\\
+E' compreso tra 0 e 1, dove 0 indica che il clustering e il labelling non concordano su alcun punto, mentre 1 indica che c'è concordanza massima.\\
 \\
 Il Rand Index presenta un problema grave: valutare un \textit{clustering casuale uniforme}, anche detto \textbf{random labelling}, rispetto ad ground truth determina un buon valore, crescente con il numero di cluster creati. Chiaramente questa situazione non è desiderabile, ed è casuata dal fatto che i quattro valori incidono tutti allo stesso modo sul risultato.\\
 Per risolvere questo problema si usa una versione "aggiustata" dell'indice, chiamata \textbf{Adjusted Rand Index} (ARI)\cite{ari}.\\
@@ -185,6 +187,7 @@ dove:
 	\item $ E[RI] $ è il valore atteso del Rand Index, calcolabile con la formula del valore atteso di una variabile aleatoria ipergeometrica (il Rand Index può essere modellato come ipergeometrica) oppure calcolando il RI di un clustering uniforme casuale;
 	\item $ max(RI) $ è il massimo valore che può assumere il Rand Index, calcolato come media del numero di coppie di item di ciascun cluster e di ciascuna classe.
 \end{enumerate}
+E' compreso tra 1- e 1, dove -1 indica che il clustering è come se fosse casuale rispetto al labelling, mentre 1 indica match perfetto.\\
 
 \subsubsection{Pairwise Precision, Recall, F1-Score e Fowlkes-Mallows Index}
 Precision, Recall ed F1-Score sono misure molto usate nel task di classificazione, e possono riproposte anche nel clustering se considerate nella loro versione pairwise, cioè che contano il numero di coppie invece che i singoli item.\\
@@ -204,7 +207,8 @@ Il \textbf{Fowlkes-Mallows Index}, o \textbf{G-Measure} di un clustering rispett
 \begin{align}
 	FM = \sqrt{Pr * Re}
 \end{align}
-Il Fowlkes-Mallows è immune al random labelling, ovvero che in quel caso ritorna uno score tendente a 0.
+Tutte e quattro le misure sono comprese tra 0 e 1, con 0 indicante totale indipendenza tra clustering e labelling, e con 1 indicante match perfetto.\\
+Il Fowlkes-Mallows è immune al random labelling: in quel caso ritorna uno score tendente a 0.\\
 Nessuna delle quattro misure tiene conto dei TN, cosa che potrebbe essere utile in alcuni casi.
 
 \subsubsection{Altre misure}

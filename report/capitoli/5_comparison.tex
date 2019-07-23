@@ -1,1 +1,25 @@
 Confronto risultati rispetto ad altre tecniche
+
+\begin{table}[H]
+	\centering
+	\begin{tabularx}{\textwidth}{X c c c}
+		\hline
+		\textbf{Name} & \textbf{Silhouette} & \textbf{DB} & \textbf{Dunn} \\
+		\hline
+		\textbf{TwoLeadECG} & 0.427 & 0.924 & / \\
+	\end{tabularx}
+	\caption{Misure interne del clustering con 100 iterazioni}
+	\label{tab:clustering100_int}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabularx}{\textwidth}{X c c c c}
+		\hline
+		\textbf{Name} & \textbf{Purity} & \textbf{Rel. Purity} & \textbf{ARI} & \textbf{FM}\\
+		\hline
+		\textbf{TwoLeadECG} & 0.568 & 0.546875 & 0 & 0.511 \\
+	\end{tabularx}
+	\caption{Misure esterne del clustering con 100 iterazioni}
+	\label{tab:clustering100_ext}
+\end{table}
