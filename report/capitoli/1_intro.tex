@@ -118,8 +118,8 @@ dove:
 	$c_i$ è la compactness del cluster $C_i$ calcolata come distanza media di tutti gli item in $C_i$ rispetto al proprio centroide.\\
 	$d(C_i, C_j)$ è la separation tra i cluster $C_i$ e $C_j$, calcolata come distanza tra i rispettivi centroidi.
 \end{enumerate}
-E' compreso tra 0 e 1, ma a differenza di altri indici, un buon clustering è rappresentato da un DB tendente a 0. Per minimizzare DB, bisogna rendere i cluster il meno simile possibile, realizzabile minimizzando le compactness di ciascun cluster (i valori $c_i$) oppure massimizzando la separation tra cluster ($d(C_i, C_j)$).\\
-Cluster molto densi e distanti hanno DB minimo.
+Ha 0 come lower bound, e a differenza di altri indici un buon clustering è rappresentato da un DB tendente a 0. Per minimizzare DB, bisogna rendere i cluster il meno simile possibile, realizzabile minimizzando le compactness di ciascun cluster (i valori $c_i$) oppure massimizzando la separation tra cluster ($d(C_i, C_j)$).\\
+Cluster molto densi e distanti hanno DB minimo. Con DBSCAN si raggiungono quasi sempre score tendenti a 0 poiché è l'algoritmo stesso che ottimizza la densità dei cluster.
 
 \subsection{Misure di validazione esterne}
 Una \textbf{misura di validazione interna} si occupa di validare i risultati di un algoritmo di clustering rispetto a delle \textbf{ground truth}\footnote{Verità di base}, ovvero delle informazioni relative ad un altro tipo di clustering o classificazione degli stessi dati non usate per compiere il clustering in esame.\\
