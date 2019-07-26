@@ -34,7 +34,7 @@ Chiaramente, è possibile rendere più profonda una RNN, ed esistono diversi mod
 Come evidenziato da bengio et al.\cite{long_term}, il modello standard di RNN nella pratica soffre di un problema long-term dependencies. Man mano che la rete compie un alto numero di ripetizioni del layer ricorrente, le caratteristiche apprese dalla prime ripetizioni iniziano a diventare meno rilevanti, quasi come se la rete iniziasse a dimenticare cosa ha fatto nel passato non recente. In alcuni casi è importante mantenere informazioni che risalgono ad un passato meno recente.\\
 \\
 Per risolvere questo problema, Hochreiter et al.\cite{lstm} hanno presentato la più applicata implementazione di RNN, ovvero le reti \textbf{LSTM, Long Short Term Memory}.\\
-Il layer ricorrente di una LSTM segue una precisa struttura, ed è chiamato \textbf{cella LSTM}\footnote{I neuroni di una cella LSTM sono anche detti \textbf{unità LSTM}.}. Mentre nelle RNN standard i layer ricorrenti sono composti da neuroni che applicano una qualsiasi funzione di attivazione, un layer LSTM è invece composto da quattro sotto-layer, che applicano delle funzioni più complesse.
+Il layer ricorrente di una LSTM segue una precisa struttura, ed è chiamato \textbf{cella LSTM}. Mentre nelle RNN standard i layer ricorrenti sono composti da neuroni che applicano una qualsiasi funzione di attivazione, un layer LSTM è invece composto da quattro sotto-layer, che applicano delle funzioni più complesse.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{rnn_2.png}
@@ -49,15 +49,36 @@ Il layer ricorrente di una LSTM segue una precisa struttura, ed è chiamato \tex
 \end{figure}
 La linea superiore della cella porta l'output superiore della cella precedente direttamente alla cella successiva, a meno di alcune operazioni lineari. Serve a mandare in avanti la conoscenza del passato senza modificarla troppo.\\
 \\
-La cella LSTM non segue necessariamente lo schema suddetto, ed esistono altre varianti, tutte accomunate dall'idea della linea superiore che preserva le long-term dependencies.
+La cella LSTM non segue necessariamente lo schema suddetto, ed esistono altre varianti, tutte accomunate dall'idea della linea superiore che preserva le long-term dependencies.\\
+La \textbf{hidden size}, cioè dimensione dello stato nascosto, determina la dimensione dei quattro sotto-layer, ovvero il numero dei loro neuroni, quindi il numero totale dei neuroni presenti in una LSTM è dato dalla $hidden size * 4$. Tipicamente, al crescere della hidden size cresce anche la capacità di memorizzazione della LSTM.
 
 \section{Autoencoder}
-Cos'è un autoencoder
-Casi d'uso tipici
+Un \textbf{autoencoder} è un rete neurale capace di apprendere caratteristiche da dati di training non etichettati, quindi in modo non supervisionato.\\
+Un autoencoder prende i dati dall'input layer e li trasforma in una rappresentazione interna, detta \textbf{codifica}, da riusare per tentare di ricostruire l'input e mandarlo sull'output layer.\\
+Lo scopo finale non è quello di ricostruire perfettamente l'input (sarebbe abbastanza inutile) ma quello di estrarre dagli input una codifica contenente le loro principali caratteristiche. In altre parole, si pone di cercare feature rilevanti nell'input.\\
+\\
+Per compiere la ricostruzione è necessario che input e output layer siano della stessa dimensione, tuttavia, al fine di permettere alla rete di estrarre le feature dagli input, il layer nascosto dove apparirà la codifica, detto \textbf{coding layer}, dovrà necessariamente essere di dimensione minore degli input e output layer. In questo caso si parla di autoencoder \textbf{undercomplete}.\\
+Un autoencoder è sempre composto da due parti sostanzialmente:
+\begin{itemize}
+	\item Un \textbf{encoder}, una rete neurale che riduce l'input nella codifica. Anche detta \textit{rete ricognitica};
+	\item Un \textbf{decoder}, una rete neurale che ricostruisce l'input dell'encoder a partire dalla codifica. Anche detta \textit{rete generativa};
+\end{itemize}
+Encoder e decoder sono simmetrici rispetto al coding layer.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{autoencoder.png}
+	\caption{Schema di un autoencoder.}
+	\label{fig:autoencoder}
+\end{figure}
+Gli autoencoder sono usati principalmente per fare \textbf{dimensionality reduction}, dato che la codifica è una rappresentazione ridotta di ogni input, ma anche \textbf{generazione di sample}, ovvero generare nuovi dati a partire da codifiche arbitrarie.\\
+\\
+Come una qualsiasi altra rete neurale, gli autoencoder possono essere resi più profondi aggiungendo layer nascosti, sia dal lato dell'encoder che dal lato del decoder. In tal caso si parla di \textbf{autoencoder stacked}.\\
+In generale, un maggior livello di profondità permette alla rete di comprendere pattern più complessi, tuttavia una profondità troppo alta rende il rischio di overfitting più alto.
+
 
 \section{Descrizione del modello proposto}
 Perché lo abbiamo usato noi in questo caso
-Struttura: stacked di 2 LSTM insomma, sia per encoder che per decoder
+Struttura: stacked di LSTM insomma, sia per encoder che per decoder, e size coding layer
 Come lo abbiamo usato (setting iperparametri, cosa abbiamo preso da esso (i vettori latenti) e cosa no)
 
 \subsection{Training}
