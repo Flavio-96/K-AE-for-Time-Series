@@ -2,11 +2,12 @@
 Una \textbf{time series}\footnote{Nel seguito verrà usato anche \textit{TS}} (serie temporale) è una serie di dati ordinati nel tempo. Tipicamente, i dati sono presi ad intervalli di tempo regolari. Alcuni esempi sono gli elettrocardiogrammi, l'andamento delle maree, i valori azionari.
 \begin{figure}[H]
 	\centering
-	%\includegraphics[width=\linewidth]{timeseries.png}
+	\includegraphics[width=\linewidth]{timeseries.png}
 	\caption{Un'insieme di TS, ciascuna di colore diverso}
 	\label{fig:timeseries}
 \end{figure}
 Le TS, quindi, sono molti simili a dei segnali, quindi analizzabili sia in dominio del tempo che in dominio della frequenza.\\
+Il numero di intervalli di tempo definiscono la cosiddetta \textbf{lunghezza} della time series, e quindi la sua dimensionalità.
 \\
 L'\textbf{analisi di time series} si occupa di analizzare questi dati per estrarre informazioni statisticamente rilevanti per diversi scopi:
 \begin{itemize}
@@ -45,14 +46,17 @@ TSFresh non fornisce alcun modello di classificazione, regressione o clustering,
 Tuttavia, rispetto a TSFresh, è meno matura: ha pochi algoritmi implementati, una documentazione meno ricca, meno contributors e fork.
 
 \section{Soluzione proposta}
-Per affrontare il problema descritto vengono adottati due approcci abbastanza differenti:
-\begin{itemize}
-	\item \textbf{Autoencoder + k-Means}, perché è stato scelto e cosa risolve;
-	\item \textbf{DTW + DBSCAN}, perché e cosa risolve.
-\end{itemize}
-Per realizzare queste soluzioni è stato scelto il linguaggio Python per via dell'alto supporto fornito dalle sue libreria, quali \textit{Scikit-Learn}\cite{sklearn_api}, \textit{NumPy}\cite{numpy}, \textit{Matplotlib}\cite{matplotlib} e \textit{Pandas}\cite{pandas}. Il codice è stato inserito in notebook \textbf{Jupyter}, così da poter visualizzare subito i risultati di alcuni snipper di codice, di rieseguirli velocemente e di immergere anche dei commenti in Markdown.\\
+Per affrontare il problema descritto si farà uso di un \textbf{autoencoder}, una particolare rete neurale in grado di fornire una rappresentazioni compatta dei suoi input (qui le TS), detta \textbf{vettore latente}, di dimensione ridotta e decisa tramite iperparametri del modello.\\
+DESCRIZIONE BREVE EXTRA\\
+Sui vettori latenti del test set verrà lanciato il clustering con k-Means, reiterato più volte per una maggiore stabilità e con un diverso numero di cluster.\\
 \\
-Per poter valutare i risultati del clustering si adotteranno misure interne e misure esterne\cite{metrics}. Esse, oltre a stabilità la qualità dell'algoritmo di clustering, servono anche per trovare il numero di cluster ottimale nel caso in cui l'algoritmo non è in grado di stabilirlo da sè, come nel caso di k-Means.
+Per realizzare queste soluzioni è stato scelto il linguaggio \textit{Python} per via dell'alto supporto fornito dalle sue libreria, quali \textit{Scikit-Learn}\cite{sklearn_api}, \textit{NumPy}\cite{numpy}, \textit{Matplotlib}\cite{matplotlib} e \textit{Pandas}\cite{pandas}. Il codice è stato inserito in notebook \textit{Jupyter}, così da poter visualizzare subito i risultati di alcuni snipper di codice, di rieseguirli velocemente e di immergere anche dei commenti in \textit{Markdown}.\\
+
+\section{Validazione della soluzione}
+Per poter valutare le prestazioni dell'autoencoder si adotteranno alcune misure interne e misure esterne\cite{metrics} di clustering. Esse, oltre a stabilire la qualità dell'algoritmo di clustering in sè, servono anche per trovare il numero di cluster ottimale nel caso in cui l'algoritmo non è in grado di stabilirlo da sè, come nel caso di k-Means.\\
+\\
+I risultati del modello verranno confrontati con quelli ritornati dal k-Means con metrica di distanza DTW offerto dalla libreria TSLearn. Questo confronto serve a stabilire quanto è affidabile questo modello sui dataset in esame.\\
+Inoltre, i risultati del modello saranno confrontati con altri lavori simili.
 
 \subsection{Misure di validazione interne}
 Una \textbf{misura di validazione interna} si occupa di validare i risultati di un algoritmo di clustering guardando quanto bene ha accomunato (messi in uno stesso cluster) item simili e quanto bene ha separato (messi in cluster diversi) item diversi.\\
@@ -69,7 +73,7 @@ Il \textbf{Silhouette Coefficient di un item $i$} serve a stabilire quanto bene 
 \\
 Sia $i$ un'item e sia $d$ una qualsiasi funzione di distanza. Il Silhouette Coefficient di i, $S(i)$ si calcola nel seguente modo:
 \begin{align}
-	S(i) = \frac{b_i - a_i}{max(a_i, b_i)}
+S(i) = \frac{b_i - a_i}{max(a_i, b_i)}
 \end{align}
 dove:
 \begin{enumerate}[(i)]
@@ -84,7 +88,7 @@ Se $S(i)$ è circa 0 allora l'item non dovrebbe stare in nessuno dei due cluster
 \\
 E' possibile calcolare il Silhouette Coefficient medio di tutto il clustering. Sia D l'insieme di tutti gli item:
 \begin{align}
-	S = \frac{1}{|D|} \sum_{i \in D} S(i)
+S = \frac{1}{|D|} \sum_{i \in D} S(i)
 \end{align}
 Più S tende ad 1, migliore è l'assegnazione degli item.\\
 La sua elaborazione può richiedere molto tempo se la metrica di distanza è complessa.
@@ -94,7 +98,7 @@ Il \textbf{Dunn Index} di un clustering misura quanto bene i cluster sono compat
 \\
 Sia m il numero di cluster, il Dunn Index è calcolabile nel seguente modo:
 \begin{align}
-	D = \frac{\min_{1\le i \le j \le m}\delta(C_i, C_j)}{\max_{1 \le k \le m}(diam(C_k))}
+D = \frac{\min_{1\le i \le j \le m}\delta(C_i, C_j)}{\max_{1 \le k \le m}(diam(C_k))}
 \end{align}
 dove:
 \begin{enumerate}[(i)]
@@ -110,7 +114,7 @@ Il \textbf{Davies-Bouldin Index} di un clustering misura la media di similarità
 \\
 Sia m il numero di cluster, il Davies-Bouldin Index è calcolabile nel seguente modo:
 \begin{align}
-	DB = \frac{1}{m}\sum_{i=1}^{m}\max_{i \ne j}sim(C_i, C_j)
+DB = \frac{1}{m}\sum_{i=1}^{m}\max_{i \ne j}sim(C_i, C_j)
 \end{align}
 dove:
 \begin{enumerate}[(i)]
@@ -157,7 +161,7 @@ La \textbf{Purity} è una misura che stabilisce quanto bene un clustering copra 
 \\
 Formalmente, sia C il clustering analizzato, L l'insieme di classi di riferimento, e sia N l'insieme degli item:
 \begin{align}
-	P = \frac{1}{|N|}\sum_{c \in C}\max_{l \in L}|c \cap l|
+P = \frac{1}{|N|}\sum_{c \in C}\max_{l \in L}|c \cap l|
 \end{align}
 E' compresa tra 0 e 1, con 0 indicante nessuna copertura, e 1 indicante copertura massima.\\
 Ogni cluster partecipa alla sommatoria con il numero di item della classe assolutamente più diffusa al suo interno. Guardando alla Contingency Matrix, si sommano i valori massimi di ciascuna colonna.\\
@@ -170,7 +174,7 @@ La divisione viene comunque fatta sul numero totale di elementi. Questa misura p
 Il \textbf{Rand index}, o \textbf{Accuracy}, è il rapporto tra il numero di coppie correttamente clusterizzate (ottenuto dalla somma di TP e TN) sul numero di coppie non ordinate totali.\\
 Sia n il numero di item, il Rand Index si calcola nel seguente modo:
 \begin{align}
-	RI = \frac{TP + TN}{C_2^n}
+RI = \frac{TP + TN}{C_2^n}
 \end{align}
 Il numero di coppie non ordinate può anche essere calcolato sommando TP, FP, FN e TN.\\
 E' compreso tra 0 e 1, dove 0 indica che il clustering e il labelling non concordano su alcun punto, mentre 1 indica che c'è concordanza massima.\\
@@ -179,7 +183,7 @@ Il Rand Index presenta un problema grave: valutare un \textit{clustering casuale
 Per risolvere questo problema si usa una versione "aggiustata" dell'indice, chiamata \textbf{Adjusted Rand Index} (ARI)\cite{ari}.\\
 L'ARI tiene conto del RI del random labelling e lo usa come riferimento:
 \begin{align}
-	ARI = \frac{RI - E[RI]}{max(RI) - E[RI]}
+ARI = \frac{RI - E[RI]}{max(RI) - E[RI]}
 \end{align}
 dove:
 \begin{enumerate}[(i)]
@@ -193,19 +197,19 @@ E' compreso tra 1- e 1, dove -1 indica che il clustering è come se fosse casual
 Precision, Recall ed F1-Score sono misure molto usate nel task di classificazione, e possono riproposte anche nel clustering se considerate nella loro versione pairwise, cioè che contano il numero di coppie invece che i singoli item.\\
 La \textbf{Precision} di un clustering rispetto a delle ground truth è calcolata nel seguente modo:
 \begin{align}
-	Pr = \frac{TP}{TP + FP}
+Pr = \frac{TP}{TP + FP}
 \end{align}
 La \textbf{Recall} di un clustering rispetto a delle ground truth è calcolata nel seguente modo:
 \begin{align}
-	Re = \frac{TP}{TP + FN}
+Re = \frac{TP}{TP + FN}
 \end{align}
 L'\textbf{F1-Score} di un clustering rispetto a delle ground truth è la media armonica di Precision e Recall; calcolata nel seguente modo:
 \begin{align}
-	F_1 = 2\:\frac{Pr * Re}{Pr + Re}
+F_1 = 2\:\frac{Pr * Re}{Pr + Re}
 \end{align}
 Il \textbf{Fowlkes-Mallows Index}, o \textbf{G-Measure} di un clustering rispetto a delle ground truth è la media geometrica di Precision e Recall; calcolato nel seguente modo:
 \begin{align}
-	FM = \sqrt{Pr * Re}
+FM = \sqrt{Pr * Re}
 \end{align}
 Tutte e quattro le misure sono comprese tra 0 e 1, con 0 indicante totale indipendenza tra clustering e labelling, e con 1 indicante match perfetto.\\
 Il Fowlkes-Mallows è immune al random labelling: in quel caso ritorna uno score tendente a 0.\\
@@ -224,10 +228,12 @@ Esistono numerose altre misure esterne, tra le quali:
 \end{itemize}
 
 \section{Struttura del documento}
-Nel capitolo \ref{chap:dataset} verranno presentati i dataset scelti per valutare le due soluzioni proposte, illustrandone alcune caratteristiche.\\
-Nel capitolo \ref{chap:autoencoder} verrà presentata la prima delle due soluzioni proposte, ovvero quella che ricorre all'uso di un Autoencoder.\\
-Nel capitolo \ref{chap:dtw} verrà mostrata la seconda delle due soluzioni, illustrando la tecnica del Dynamic Time Warping e il suo uso nel clustering.\\
-Nel capitolo \ref{chap:comparison} viene fatta un'analisi comparativa con altre soluzioni relative al clustering di TS.\\
+Nel capitolo \ref{chap:dataset} verranno presentati i dataset scelti per valutare la soluzione proposta, illustrandone le caratteristiche principali.\\
+\\
+Nel capitolo \ref{chap:autoencoder} verrà presentata la soluzione proposta, ovvero quella che ricorre all'uso di un autoencoder. Nello stesso verranno anche mostrati i risultati del modello.\\
+\\
+Nel capitolo \ref{chap:comparison} verrà illustrata la tecnica del DTW e fatto un confronto con i risultati ottenuti sugli stessi dataset da TSLearn e da altre tecniche di feature extraction and selection.\\
+\\
 Infine, nel capitolo \ref{chap:conclusioni} verranno tratte delle conclusioni.\\
 \\
 I capitoli centrali presenteranno le soluzioni con snippet di codice Python presenti nel notebook.
