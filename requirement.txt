@@ -11,3 +11,4 @@ sklearn
 tensorflow
 tensorflow_probability
 dtaidistance
+nbmultitask
