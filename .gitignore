@@ -30,3 +30,7 @@ jupyter/\.ipynb_checkpoints/Autoencoder_for_time_series-checkpoint\.ipynb
 *.run.xml
 *.bcf
 
+
+jupyter/\.ipynb_checkpoints/TSLearn-checkpoint\.ipynb
+
+jupyter/\.ipynb_checkpoints/
