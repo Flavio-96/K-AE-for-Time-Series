@@ -1,10 +1,10 @@
 from sklearn.metrics.cluster import contingency_matrix
 from sklearn.metrics import silhouette_score, davies_bouldin_score, adjusted_rand_score \
     , adjusted_mutual_info_score, v_measure_score, fowlkes_mallows_score
+from sklearn.metrics.pairwise import euclidean_distances
 import numpy as np
+#from .dunn import dunn
 
-
-# Dunn Index is heavy and good for small datasets. TODO
 
 # Misura la densità del clustering, ovvero quanto un sample è simile agli altri punto dello stesso cluster
 # e quanto bene dista dal cluster più vicino usando una metrica di similarità (euclidea, cosine, ecc).
@@ -21,6 +21,12 @@ def silhouette(dataset, clustering):
 # Più veloce di silhouette ma limitato alla distanza euclidea
 def db(dataset, clustering):
     return davies_bouldin_score(dataset, clustering)
+
+
+# Dunn Index is heavy and good for small datasets. TODO
+#def di(dataset, clustering):
+#    distances = euclidean_distances(dataset)
+#    return dunn(clustering, distances)
 
 
 # Righe le label e colonne i cluster

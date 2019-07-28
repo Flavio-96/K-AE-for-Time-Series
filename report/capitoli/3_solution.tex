@@ -195,9 +195,10 @@ Di seguito sono riportati i risultati del clustering dei dei dataset in esame.
 	]{clustering_metrics/TwoPatterns_metrics.csv}
 \end{center}
 
-Si osserva che sui dataset relativi agli elettrocardiogrammi...
-
-
-++++Osservazioni dei risultati (ad es. la purity è spesso alta, mentre un'altra cosa varia molto, o che su dataset grandi funziona bene, su piccoli no, ecc.)++++
-
-
+Da questi risultati è possibile fare una serie di osservazioni:
+\begin{itemize}
+	\item Le \textbf{misure interne sono molto influenzate dal numero di cluster}, andando a peggiorare man mano che il numero cresce. Questo, chiaramente, dipende molto dalla disposizione dei dati nello spazio e anche dal tipo di algoritmo di clustering: k-Means, infatti, non ottimizza la densità dei cluster, a differenza di altri come DBSCAN;
+	\item Le misure di \textbf{purity e relative purity sono abbastanza indipendenti dal numero di cluster}. Questo potrebbe significare che sono più influenzare dalla natura del dataset e dal tipo di caratteristiche estratte dall'autoencoder;
+	\item I \textbf{dataset degli elettrocardiogrammi le misure esterne sono tendenzialmente alte}. Questo significa che l'autoencoder è riuscito a estrarre quelle caratteristiche degli elettrocardiogrammi che gli autori del dataset hanno usato per fare il labelling. Questo non accade per gli altri dataset, o almeno non con gli stessi score;
+	\item \textbf{Le caratteristiche delle TS molto "rumorose"}\footnote{hanno dei pattern che continuamente alternano valori alti e valori bassi} \textbf{non riescono ad essere estratte bene dall'autoencoder}, e questo si rispecchia nelle misure interne basse per FordA, FordB e RefrigerationDevices e TwoPatterns;
+\end{itemize}
