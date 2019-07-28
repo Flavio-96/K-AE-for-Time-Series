@@ -54,7 +54,7 @@ La \textbf{hidden size}, cioè dimensione dello stato nascosto, determina la dim
 
 \section{Autoencoder}
 Un \textbf{autoencoder} è un rete neurale capace di apprendere caratteristiche da dati di training non etichettati, quindi in modo non supervisionato.\\
-Un autoencoder prende i dati dall'input layer e li trasforma in una rappresentazione interna, detta \textbf{codifica}, da riusare per tentare di ricostruire l'input e mandarlo sull'output layer.\\
+Un autoencoder prende i dati dall'input layer e li trasforma in una rappresentazione interna, detta \textbf{codifica} o \textbf{vettore latente}, da riusare per tentare di ricostruire l'input e mandarlo sull'output layer.\\
 Lo scopo finale non è quello di ricostruire perfettamente l'input (sarebbe abbastanza inutile) ma quello di estrarre dagli input una codifica contenente le loro principali caratteristiche. In altre parole, si pone di cercare feature rilevanti nell'input.\\
 \\
 Per compiere la ricostruzione è necessario che input e output layer siano della stessa dimensione, tuttavia, al fine di permettere alla rete di estrarre le feature dagli input, il layer nascosto dove apparirà la codifica, detto \textbf{coding layer}, dovrà necessariamente essere di dimensione minore degli input e output layer. In questo caso si parla di autoencoder \textbf{undercomplete}.\\
@@ -86,20 +86,22 @@ Come lo abbiamo usato (setting iperparametri, cosa abbiamo preso da esso (i vett
 
 \section{Clustering con k-Means}
 Per poter sfruttare la riduzione della dimensionalità compiuta dall'autoencoder, tutto il test set (di default corrispondente al 20\% del dataset) viene dato in input all'autoencoder per estrarne i relativi vettori latenti, ovvero la codifica delle TS di test.\\
-Il k-Means viene lanciato cinque volte, seguendo questa regola
-Sia n il numero di classi di un dataset:
+Il k-Means viene lanciato cinque volte, seguendo questa regola. Sia n il numero di classi di un dataset:
 \begin{enumerate}[(i)]
 	\item Se $n\leq3$, allora si esegue da $2-$Means a $6-$Means;
 	\item Se $n>2$, allora si esegue da $n-2-$Means ad $n+2-$Means.
 \end{enumerate}
-Viene lanciato l'implementazione di Scikit-Learn, retirato 100 volte (tramite il parametro $n\_init$) in modo tale da ripetere 100 volte l'algoritmo e ritornare il clustering migliore. Non viene fornito nessun random state.\\
-Il k-Means usa come funzione di distanza quella euclidea, che va bene poiché i vettori latenti non sono delle TS, quindi la distanza DTW non sarebbe adatta.\\
+Ne viene lanciata l'implementazione di Scikit-Learn, retirata 100 volte (tramite il parametro $n\_init$) in modo tale che venga scelto il clustering migliore su 100 tentativi. Non viene fornito nessun random state in input.\\
+Il k-Means usa come funzione di distanza quella euclidea, che risulta accettabile poiché i vettori latenti non sono delle TS, quindi la distanza DTW non è pienamente adatta, oltre che dispendiosa in termini di computazione.\\
 \\
 Per ciascuna esecuzione di k-Means viene mostrato il plot del clustering sui sample di test. Le metriche di valutazione, sia interne che esterne, sono tutte accumulate in un DataFrame di Pandas, esportato successivamente in CSV.
 
 \subsection{Valutazione dei risultati}
-Di seguito sono riportati i risultati del clustering dei dei dataset in esame.
+Il modello presenta molti iperparametri, quindi il setting non è stato immediato. Si è ricordo alla \textbf{random search} per poter trovare una buona combinazione di iperparametri.\\
+Per alcuni dataset, come ECG5000, ECG200, TwoLeadECG, PhalangesOutlineCorrect, ChlorineConcentration, questa ricerca ha portato miglioramenti in tutti gli score, mentre per gli altri dataset la ricerca non comportava alcun cambiamento sostanziale agli score.\\
+Di seguito sono riportati i risultati del clustering dei dataset in esame dopo aver fatto il setting degli iperapametri:
 
+\subsubsection{ECG5000}
 \begin{center}
 	\pgfplotstabletypeset[
 	col sep=comma,
@@ -112,9 +114,10 @@ Di seguito sono riportati i risultati del clustering dei dei dataset in esame.
 		after row=\hline
 	},
 	every last row/.style={after row=\hline},
-	]{clustering_metrics/ECG5000_metrics.csv}
+	]{metrics/autoencoder/ECG5000_metrics.csv}
 \end{center}
 
+\subsubsection{ECG200}
 \begin{center}
 	\pgfplotstabletypeset[
 	col sep=comma,
@@ -127,9 +130,10 @@ Di seguito sono riportati i risultati del clustering dei dei dataset in esame.
 		after row=\hline
 	},
 	every last row/.style={after row=\hline},
-	]{clustering_metrics/ECG200_metrics.csv}
+	]{metrics/autoencoder/ECG200_metrics.csv}
 \end{center}
 
+\subsubsection{ChlorineConcentration}
 \begin{center}
 	\pgfplotstabletypeset[
 	col sep=comma,
@@ -142,12 +146,29 @@ Di seguito sono riportati i risultati del clustering dei dei dataset in esame.
 		after row=\hline
 	},
 	every last row/.style={after row=\hline},
-	]{clustering_metrics/ChlorineConcentration_metrics.csv}
+	]{metrics/autoencoder/ChlorineConcentration_metrics.csv}
 \end{center}
 
-+++++FordA+++++\\
+\subsubsection{FordA}
+\begin{center}
+	\pgfplotstabletypeset[
+	col sep=comma,
+	string type,
+	every head row/.style={
+		before row={\hline
+			\multicolumn{1}{c|}{\textbf{FordA}} &
+			\multicolumn{2}{c|}{Internal} & \multicolumn{4}{c}{External} \\
+		},
+		after row=\hline
+	},
+	every last row/.style={after row=\hline},
+	]{metrics/autoencoder/FordA_metrics.csv}
+\end{center}
+
+\subsubsection{FordB}
 +++++FordB+++++
 
+\subsubsection{PhalangesOutlinesCorrect}
 \begin{center}
 	\pgfplotstabletypeset[
 	col sep=comma,
@@ -160,11 +181,13 @@ Di seguito sono riportati i risultati del clustering dei dei dataset in esame.
 		after row=\hline
 	},
 	every last row/.style={after row=\hline},
-	]{clustering_metrics/PhalangesOutlinesCorrect_metrics.csv}
+	]{metrics/autoencoder/PhalangesOutlinesCorrect_metrics.csv}
 \end{center}
 
+\subsubsection{RefrigerationDevices}
 +++++Refrigeration+++++
 
+\subsubsection{TwoLeadECG}
 \begin{center}
 	\pgfplotstabletypeset[
 	col sep=comma,
@@ -177,9 +200,10 @@ Di seguito sono riportati i risultati del clustering dei dei dataset in esame.
 		after row=\hline
 	},
 	every last row/.style={after row=\hline},
-	]{clustering_metrics/TwoLeadECG_metrics.csv}
+	]{metrics/autoencoder/TwoLeadECG_metrics.csv}
 \end{center}
 
+\subsubsection{TwoPatterns}
 \begin{center}
 	\pgfplotstabletypeset[
 	col sep=comma,
@@ -192,13 +216,22 @@ Di seguito sono riportati i risultati del clustering dei dei dataset in esame.
 		after row=\hline
 	},
 	every last row/.style={after row=\hline},
-	]{clustering_metrics/TwoPatterns_metrics.csv}
+	]{metrics/autoencoder/TwoPatterns_metrics.csv}
 \end{center}
 
-Da questi risultati è possibile fare una serie di osservazioni:
-\begin{itemize}
-	\item Le \textbf{misure interne sono molto influenzate dal numero di cluster}, andando a peggiorare man mano che il numero cresce. Questo, chiaramente, dipende molto dalla disposizione dei dati nello spazio e anche dal tipo di algoritmo di clustering: k-Means, infatti, non ottimizza la densità dei cluster, a differenza di altri come DBSCAN;
-	\item Le misure di \textbf{purity e relative purity sono abbastanza indipendenti dal numero di cluster}. Questo potrebbe significare che sono più influenzare dalla natura del dataset e dal tipo di caratteristiche estratte dall'autoencoder;
-	\item I \textbf{dataset degli elettrocardiogrammi le misure esterne sono tendenzialmente alte}. Questo significa che l'autoencoder è riuscito a estrarre quelle caratteristiche degli elettrocardiogrammi che gli autori del dataset hanno usato per fare il labelling. Questo non accade per gli altri dataset, o almeno non con gli stessi score;
-	\item \textbf{Le caratteristiche delle TS molto "rumorose"}\footnote{hanno dei pattern che continuamente alternano valori alti e valori bassi} \textbf{non riescono ad essere estratte bene dall'autoencoder}, e questo si rispecchia nelle misure interne basse per FordA, FordB e RefrigerationDevices e TwoPatterns;
-\end{itemize}
+Da questi risultati è possibile fare una serie di osservazioni sulle misure:
+\begin{enumerate}
+	\item Le \textbf{misure interne sono molto influenzate dal numero di cluster}, andando a peggiorare man mano che il numero cresce.\\
+	Questo, chiaramente, dipende molto dalla disposizione dei dati nello spazio e anche dal tipo di algoritmo di clustering: k-Means, infatti, non ottimizza la densità dei cluster, a differenza di altri come DBSCAN;
+	\item Le \textbf{misure esterne sono molto suscettibili con piccoli dataset}, infatti, nel caso di ECG200, si hanno ARI ed FMI abbastanza bassi.\\
+	Il motivo risiede nel fatto che le metriche esterne sono basate su conteggi non pesati;
+	\item Le misure di \textbf{purity e relative purity sono abbastanza indipendenti dal numero di cluster}.\\
+	Questo potrebbe significare che sono più influenzare dalla natura del dataset e dalle caratteristiche che l'autoencoder è stato in grado di estrarre, piuttosto che dal numero di cluster.
+\end{enumerate}
+
+Inoltre, è stato possibile fare le seguenti osservazioni sul modello e sui dataset:
+\begin{enumerate}	
+	\item Nei \textbf{dataset degli elettrocardiogrammi le misure esterne sono tendenzialmente alte}. Questo significa che l'autoencoder è riuscito a estrarre quelle caratteristiche che gli autori dei dataset hanno usato per fare il labelling degli elettrocardiogrammi.\\
+	Questo non accade per gli altri dataset, o almeno non con gli stessi score;
+	\item \textbf{Le caratteristiche delle TS molto "rumorose"}\footnote{hanno dei pattern che continuamente alternano valori alti e valori bassi} \textbf{non riescono ad essere estratte bene dall'autoencoder}, e questo si rispecchia nelle misure interne basse e nelle misure esterne che ricordano quelle del random labelling. Questo accade per FordA, FordB, RefrigerationDevices e TwoPatterns;
+\end{enumerate}

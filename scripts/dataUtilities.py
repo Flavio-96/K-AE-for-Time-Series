@@ -40,5 +40,5 @@ def scale_data(dataset):
     return dataset_scaled
 
 
-def plot_dataframe(dataset, title):
+def plot_as_dataframe(dataset, title):
     pd.DataFrame(dataset).plot(legend=False, title=title)
