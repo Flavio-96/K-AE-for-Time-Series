@@ -34,3 +34,9 @@ jupyter/\.ipynb_checkpoints/Autoencoder_for_time_series-checkpoint\.ipynb
 jupyter/\.ipynb_checkpoints/TSLearn-checkpoint\.ipynb
 
 jupyter/\.ipynb_checkpoints/
+
+*.meta
+
+*.index
+
+*.data-00000-of-00001
