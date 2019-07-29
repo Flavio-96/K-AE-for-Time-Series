@@ -1,2 +1,2 @@
-Clusters,Samples,DB,Purity,ARI,FMI
-2,100,2.559,0.522,-0.041,0.481
+Clusters,Samples,Silhouette,DB,Purity,ARI,FMI
+2,100,0.311,2.559,0.522,-0.041,0.481

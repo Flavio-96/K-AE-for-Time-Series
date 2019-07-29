@@ -115,6 +115,10 @@ Di seguito sono riportati i risultati del clustering dei dataset in esame dopo a
 	},
 	every last row/.style={after row=\hline},
 	]{metrics/autoencoder/ECG5000_metrics.csv}
+	\begin{table}[H]
+		\centering
+		\caption{k-Means sui vettori latenti del test set di ECG5000.}
+	\end{table}
 \end{center}
 
 \subsubsection{ECG200}
@@ -131,6 +135,10 @@ Di seguito sono riportati i risultati del clustering dei dataset in esame dopo a
 	},
 	every last row/.style={after row=\hline},
 	]{metrics/autoencoder/ECG200_metrics.csv}
+	\begin{table}[H]
+		\centering
+		\caption{k-Means sui vettori latenti del test set di ECG200.}
+	\end{table}
 \end{center}
 
 \subsubsection{ChlorineConcentration}
@@ -147,6 +155,10 @@ Di seguito sono riportati i risultati del clustering dei dataset in esame dopo a
 	},
 	every last row/.style={after row=\hline},
 	]{metrics/autoencoder/ChlorineConcentration_metrics.csv}
+	\begin{table}[H]
+		\centering
+		\caption{k-Means sui vettori latenti del test set di ChlorineConcentration.}
+	\end{table}
 \end{center}
 
 \subsubsection{FordA}
@@ -163,10 +175,31 @@ Di seguito sono riportati i risultati del clustering dei dataset in esame dopo a
 	},
 	every last row/.style={after row=\hline},
 	]{metrics/autoencoder/FordA_metrics.csv}
+	\begin{table}[H]
+		\centering
+		\caption{k-Means sui vettori latenti del test set di FordA.}
+	\end{table}
 \end{center}
 
 \subsubsection{FordB}
-+++++FordB+++++
+\begin{center}
+	\pgfplotstabletypeset[
+	col sep=comma,
+	string type,
+	every head row/.style={
+		before row={\hline
+			\multicolumn{1}{c|}{\textbf{FordB}} &
+			\multicolumn{2}{c|}{Internal} & \multicolumn{4}{c}{External} \\
+		},
+		after row=\hline
+	},
+	every last row/.style={after row=\hline},
+	]{metrics/autoencoder/FordB_metrics.csv}
+	\begin{table}[H]
+		\centering
+		\caption{k-Means sui vettori latenti del test set di FordB.}
+	\end{table}
+\end{center}
 
 \subsubsection{PhalangesOutlinesCorrect}
 \begin{center}
@@ -182,10 +215,31 @@ Di seguito sono riportati i risultati del clustering dei dataset in esame dopo a
 	},
 	every last row/.style={after row=\hline},
 	]{metrics/autoencoder/PhalangesOutlinesCorrect_metrics.csv}
+	\begin{table}[H]
+		\centering
+		\caption{k-Means sui vettori latenti del test set di PhalangesOutlinesCorrect.}
+	\end{table}
 \end{center}
 
 \subsubsection{RefrigerationDevices}
-+++++Refrigeration+++++
+\begin{center}
+	\pgfplotstabletypeset[
+	col sep=comma,
+	string type,
+	every head row/.style={
+		before row={\hline
+			\multicolumn{1}{c|}{\textbf{Refrigeration}} &
+			\multicolumn{2}{c|}{Internal} & \multicolumn{4}{c}{External} \\
+		},
+		after row=\hline
+	},
+	every last row/.style={after row=\hline},
+	]{metrics/autoencoder/RefrigerationDevices_metrics.csv}
+	\begin{table}[H]
+		\centering
+		\caption{k-Means sui vettori latenti del test set di RefrigerationDevices.}
+	\end{table}
+\end{center}
 
 \subsubsection{TwoLeadECG}
 \begin{center}
@@ -201,6 +255,10 @@ Di seguito sono riportati i risultati del clustering dei dataset in esame dopo a
 	},
 	every last row/.style={after row=\hline},
 	]{metrics/autoencoder/TwoLeadECG_metrics.csv}
+	\begin{table}[H]
+		\centering
+		\caption{k-Means sui vettori latenti del test set di TwoLeadECG.}
+	\end{table}
 \end{center}
 
 \subsubsection{TwoPatterns}
@@ -217,6 +275,10 @@ Di seguito sono riportati i risultati del clustering dei dataset in esame dopo a
 	},
 	every last row/.style={after row=\hline},
 	]{metrics/autoencoder/TwoPatterns_metrics.csv}
+	\begin{table}[H]
+		\centering
+		\caption{k-Means sui vettori latenti del test set di TwoPatterns.}
+	\end{table}
 \end{center}
 
 Da questi risultati è possibile fare una serie di osservazioni sulle misure:
