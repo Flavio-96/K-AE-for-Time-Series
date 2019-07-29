@@ -3,57 +3,57 @@ Una \textbf{time series}\footnote{Nel seguito verrà usato anche \textit{TS}} (s
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{timeseries.png}
-	\caption{Un'insieme di TS, ciascuna di colore diverso}
+	\caption{Un insieme di TS, ciascuna di colore diverso}
 	\label{fig:timeseries}
 \end{figure}
-Le TS, quindi, sono molti simili a dei segnali, quindi analizzabili sia in dominio del tempo che in dominio della frequenza.\\
-Il numero di intervalli di tempo definiscono la cosiddetta \textbf{lunghezza} della time series, e quindi la sua dimensionalità.
+Le TS consistono in una sequenza di osservazioni fatte in un determinato intervallo, e queste misurazioni sono caratterizzate dal valore discreto che assumono in corrispondenza del momento considerato.\\
+Il numero di osservazioni registrate nell'intervallo temporale definiscono la cosiddetta \textbf{lunghezza} della time series, cioè la sua dimensionalità.
 \\
-L'\textbf{analisi di time series} si occupa di analizzare questi dati per estrarre informazioni statisticamente rilevanti per diversi scopi:
+L'\textbf{analisi di time series} si occupa di analizzare questi dati per estrarre informazioni statisticamente rilevanti allo scopo di ricavarne:
 \begin{itemize}
-	\item \textbf{Previsioni}, per prevedere andamento di alcuni eventi nel futuro, come le azioni in borsa, oscillazioni della terra, tramite un modello statistico;
-	\item \textbf{Stime}, per approssimare l'informazione portata da segnali di vario genere;
-	\item \textbf{Anomaly detection}, per identificare alcuni pattern ricorrenti sospetti.
+	\item \textbf{Previsioni}: prevedere l'andamento di alcuni eventi nel futuro, come ad esempio l'andamento di azioni in borsa e le oscillazioni della terra, tramite un modello statistico;
+	\item \textbf{Stime}: approssimare l'informazione per ricavare conoscenza generale del fenomeno;
+	\item \textbf{Anomaly detection}: identificare e studiare comportamenti anomali osservati.
 \end{itemize}
-Per portare a termine questi scopi, i principali task sulle TS sono:
+I migliori risultati in questi campi si ottengono attraverso due tipi di studi delle serie temporali:
 \begin{itemize}
-	\item \textbf{Classificazione}, che consiste nella costruzione di un modello che apprende dai dati (le TS) il modo in cui assegnare a ciascuna di loro una label. Il modello può essere basato su SVM, k-NN, reti neurali, regressione o alberi di decisione. L'apprendimento è di tipo supervisionato, quindi sono necessarie delle label assegnate ai dati di addestramento;
-	\item \textbf{Clustering}, che consiste nel partizionare un insieme di TS a seconda della loro similarità. Bisogna dapprima scegliere una metrica di similarità (o distanza), come può essere la distanza Euclidea o la tecnica del DTW\footnote{Dynamic Time Warping}, e poi un algoritmo di clustering, come può essere k-Means o DBSCAN. L'apprendimento è di tipo non supervisionato, quindi non sono necessarie delle label assegnate ai dati di addestramento.
+	\item \textbf{Classificazione}: che consiste nella costruzione di un modello che apprende dalle TS il modo in cui assegnare a una nuova serie temporale una classe dato un insieme di classi predefinite. Tipicamente i modelli per questo problemi sono basati su reti neurali ricorrenti (\textbf{LSTM} sono state usate in questo progetto). 
+	\\L'apprendimento è di tipo supervisionato;
+	\item \textbf{Clustering}: l'obiettivo è partizionare le serie temporali in gruppi in base alla loro distanza in modo che le serie temporali inserite negli stessi cluster siano quanto più simili possibile. Particolare attenzione va data alla scelta della metrica di similarità (\textbf{DTW}\footnote{Dynamic Time Warping} è stata usata in questo progetto) e all'algoritmo di clustering: usare metriche e approcci di clustering differenti possono portare a risultati completamente diversi. 
+	\\L'apprendimento è di tipo non supervisionato.
 \end{itemize}
-Analizzare le TS, a differenza dell'analisi di altri tipi di dati, presenta qualche difficoltà:
+Analizzare le TS, a differenza dell'analisi di altri tipi di dati, significa dover affrontare diverse problematiche:
 \begin{itemize}
 	\item Ogni singola misurazione della TS è memorizzata in una colonna del dataset, quindi TS con un \textbf{alto numero di misurazioni} comporta un forte aumento della sua dimensionalità, rendendo lunga la sua fase di training e creando modelli non performanti\footnote{Questo problema è noto come \textbf{curse of dimensionality}};
 	\item E' difficile trovare una metrica di similarità che sia \textit{valida}, ovvero che ritorni un valore alto di similarità per le sole TS effettivamente simili, ed \textit{efficiente}, ovvero che il suo tempo di calcolo sia accettabile;
-	\item Alcune TS di una certa tipologia potrebbero essere di \textbf{lunghezza differente}, andando a danneggiare di molto le performance del modello.
+	\item Alcune TS di una potrebbero presentare \textbf{lunghezze diverse}, andando a complicare ulteriormente l'analisi.
 \end{itemize}
-Per risolvere il problema della dimensionalità bisognerebbe usare tecniche di \textbf{feature extraction and selection}, in modo tale da far allenare i modelli su un insieme ridotto di feature rilevanti oppure trasformare l'input (la singola TS) in un "formato ridotto" che ne preserva le caratteristiche.\\
+Per risolvere il problema della dimensionalità un buon approccio è quello di utilizzare tecniche di \textbf{feature extraction and selection}, in modo tale da far allenare i modelli su un insieme ridotto di feature rilevanti oppure codificare l'input (la singola TS) in un "formato compresso" che ne preservi però allo stesso tempo le caratteristiche.\\
 Per risolvere il problema della metrica di similarità bisognerebbe ricorrere a delle funzioni di distanza che tengono conto della natura delle TS.\\
 E' possibile risolvere il problema della lunghezza usando opportune tecniche di feature selection oppure metriche di similarità ad hoc per le TS.
 
 \section{Il problema}
-Si vuole compiere del \textbf{clustering} di alcuni dataset di TS al fine di \textbf{accomunare quelle simili}.\\
-Le TS potrebbero portare con sè delle label rappresentanti la loro classe di appartenenza, da ignorare ai fini del clustering in sè, essendo l'apprendimento di tipo non supervisionato. Esse, saranno comunque usate per validare esternamente i risultati ottenuti dall'algoritmo di clustering.\\
-Inoltre, si vuole che ciascun dataset possieda solo TS di lunghezza uguale.
+Il progetto è svolto in sinergia con altri gruppi e ha come obiettivo quello di verificare vari approcci per effettuare il \textbf{clustering} di TS  in modo da determinare la validità delle varie soluzioni.\\
+Per il problema in questione sono stati assegnati vari dataset e ogni gruppo ha ricevuto l'incarico di determinare delle soluzioni valide e di evidenziarne i punti di forza e le debolezze. Ai fini di effettuare un'analisi comparativa adeguata, anche le metriche di valutazione dei clustering ottenuti sono state stabilite a priori.
 
 \section{Stato dell'arte}
-L'analisi delle time series è uno studio abbastanza diffuso e in letteratura esistono diversi lavori che hanno dato un importante contributo.\\
+L'analisi delle time series è uno dei campi su cui maggiormente si sta facendo \textbf{ricerca} e si sta investendo maggiormente attualmente, non sono pochi infatti i progetti nati negli ultimi anni  che hanno contribuito allo sviluppo in merito.\\
+\textbf{TSFresh}\cite{tsfresh} è una libreria per Python, compatibile con Scikit-Learn, per l'estrazione automatica delle feature delle time series. La libreria permette di estrarre  le caratteristiche rilevanti della serie come la media, il valore minimo, il numero di picchi, la mediana, ecc. La libreria è assegna un \textit{valore di rilevanza} alle feature, così da permetterne di selezionare unicamente quelle rilevanti. Viene offerto anche un supporto al calcolo parallelo e distribuito.\\
+L'estrazione e selezione delle feature permettono di superare i problemi discussi prima, su tutti quello della lunghezza differente delle serie temporali,rendendo l'analisi molto più precisa ed efficace.\\
+TSFresh funziona solo come estrattore di feature, non fornisce alcun modello di classificazione, regressione o clustering.\\
 \\
-\textbf{TSFresh}\cite{tsfresh} è una libreria per Python, compatibile con Scikit-Learn, per l'estrazione automatica di feature di time series, ovvero caratteristiche rilevanti delle stesse, come la media, il valore minimo, il numero di picchi, la mediana, ecc. La libreria è anche in grado di assegnare un \textit{valore di rilevanza} alle feature, così da permetterne una selezione delle sole rilevanti. Viene offerto anche un supporto al calcolo parallelo e distribuito.\\
-L'estrazione e selezione delle feature sono un aspetto cruciale nell'analisi delle TS poiché esse permetteno la riduzione della loro dimensionalità, rendendole quindi trattabili.\\
-TSFresh non fornisce alcun modello di classificazione, regressione o clustering, quindi non si sostituisce ad altre librerie di machine learning come Scikit-Learn.\\
-\\
-\textbf{TSLearn}\cite{tslearn} è una libreria per Python scritta in C++ per l'analisi di time series. A differenza di TSFresh, essa offre, tra l'altro, dei modelli di apprendimento ad hoc per le TS. E' in grado di leggere i dataset, di farne del preprocessing, di compiere classificazione e regressione con SVM e clustering, usando metriche di distanza ad hoc per le TS, come il DTW.\\
-Tuttavia, rispetto a TSFresh, è meno matura: ha pochi algoritmi implementati, una documentazione meno ricca, meno contributors e fork.
+\textbf{TSLearn}\cite{tslearn} è una libreria per Python scritta in C++ per l'analisi di time series. A differenza di TSFresh, essa offre, tra l'altro, dei modelli di apprendimento ad hoc per le TS. E' in grado di leggere i dataset, di farne del preprocessing, di effettuare classificazione e regressione con SVM e clustering, usando metriche di distanza ad hoc per le TS, come il \textbf{DTW}.\\
+La libreria è piuttosto nuova (v: 0.12.0)e e sono pochi gli algoritmi implementati, e anche la documentazione è ancora poco curata nel dettaglio.
 
 \section{Soluzione proposta}
-Per affrontare il problema descritto si farà uso di un \textbf{autoencoder}, una particolare rete neurale in grado di fornire una rappresentazioni compatta dei suoi input (qui le TS), detta \textbf{codifica} o \textbf{vettore latente}, di dimensione ridotta e decisa tramite gli iperparametri del modello.\\
-Sui vettori latenti del test set verrà lanciato il clustering con k-Means, reiterato più volte per una maggiore stabilità e con un diverso numero di cluster.\\
-Per ogni esecuzione di k-Means vengono mostrati i risultati tramite misure di validazione del clustering.\\
+Come approccio principale per affrontare il problema si è scelto di fare uso di un \textbf{autoencoder}, una particolare rete neurale in grado di fornire dalla quale si ricava una codifica dell'input (qui le TS), chiamata \textbf{vettore latente}, ricavata rispetto agli iperparametri della rete.\\
+Questa rappresentazione codificata dell'input viene usata per effettuare il clustering attraverso k-Means, reiterando l'esecuzione più volte per maggiore precisione e con verificando la suddivisione con un diverso numero di cluster.\\
+Per ogni esecuzione di k-Means vengono mostrati i risultati tramite le misure di validazione del clustering scelte con gli altri gruppi.\\
 \\
-I risultati del clustering con l'autoencoder saranno poi confrontati con il k-Means attuato dalla libreria \textbf{TSLearn} e con i risultati di altre tecniche di feature extraction and selection basate su \textbf{TSFresh}.\\
-L'analisi compatariva ha il solo di scopo di valutare le prestazioni sui soli dataset in esame e su determinate categorie di TS, non per poter decretare la tecnica migliore in assoluto.\\
+I risultati del clustering con l'autoencoder saranno poi confrontati con il k-Means attuato dalla libreria \textbf{TSLearn} e con i risultati di altre tecniche di feature extraction and selection basate su \textbf{TSFresh} effettuate dagli altri gruppi.\\
+L'analisi comparativa ha il solo di scopo di valutare le prestazioni sui soli dataset in esame e su determinate categorie di TS, cercando di dare un'idea di quali tecniche possano funzionare meglio e su quale tipologie di serie temporali.\\
 \\
-Per realizzare questo lavoro è stato scelto il linguaggio \textit{Python} per via dell'alto supporto fornito dalle sue libreria, quali \textit{Scikit-Learn}\cite{sklearn_api}, \textit{NumPy}\cite{numpy}, \textit{Matplotlib}\cite{matplotlib} e \textit{Pandas}\cite{pandas}. Il codice è stato inserito in notebook \textit{Jupyter}, così da poter visualizzare subito i risultati di alcuni snipper di codice, di rieseguirli velocemente e di immergere anche dei commenti in \textit{Markdown}.\\
+Per realizzare questo lavoro è stato scelto il linguaggio \textit{Python} per via dell'alto supporto fornito dalle sue libreria, quali \textit{Scikit-Learn}\cite{sklearn_api}, \textit{NumPy}\cite{numpy}, \textit{Matplotlib}\cite{matplotlib} e \textit{Pandas}\cite{pandas}. Il codice è stato sviluppato e curato con l'utilizzo di notebook \textit{Jupyter}, così da poter permettere una veloce ed efficace gestione del progetto: per le varie tecniche pensate è stato necessario valutarne la bontà con una prototipazione veloce e semplice che permettesse inoltre di rieseguire determinate porzioni di codice e graficare i risultati ottenuti.\\
 
 \section{Validazione della soluzione}
 Per poter valutare le prestazioni dell'autoencoder si adotteranno alcune \textbf{misure interne} e \textbf{misure esterne}\cite{metrics} di clustering. Esse saranno usate per questi scopi:
@@ -241,6 +241,6 @@ Nel capitolo \ref{chap:solution} verrà presentata la soluzione proposta, ovvero
 \\
 Nel capitolo \ref{chap:comparison} verrà illustrata la tecnica del DTW e fatto un confronto con i risultati ottenuti sugli stessi dataset da TSLearn e da altre tecniche di feature extraction and selection basate su TSFresh.\\
 \\
-Infine, nel capitolo \ref{chap:conclusioni} verranno tratte delle conclusioni.\\
+Infine, nel capitolo \ref{chap:conclusioni} verranno tratte le conclusioni delle scelte fatte.\\
 \\
-I capitoli centrali presenteranno le soluzioni con snippet di codice Python presenti nel notebook.
+Nei vari capitoli le soluzioni saranno accompagnate da snippet di codice dove necessario per la comprensione del lavoro svolto.
