@@ -63,8 +63,11 @@ Di seguito sono riportati i risultati del clustering dei dataset in esame, con p
 	},
 	every last row/.style={after row=\hline},
 	]{metrics/dtw/ECG5000_dtw.csv}
+	\begin{table}[H]
+		\centering
+		\caption{5-Means con DTW su ECG5000. \textbf{Gli score dell'autoencoder sono molto simili a questi}. L'autoencoder è allora riuscito ad estrarre bene le caratteristiche degli elettrocardiogrammi, come intuito dall'analisi precedente.}
+	\end{table}
 \end{center}
-\textbf{Gli score dell'autoencoder con 5-Means sono molto simili a questi}. L'autoencoder è allora riuscito ad estrarre bene le caratteristiche degli elettrocardiogrammi, come intuito dall'analisi precedente.
 
 \subsubsection{ECG200}
 \begin{center}
@@ -80,8 +83,11 @@ Di seguito sono riportati i risultati del clustering dei dataset in esame, con p
 	},
 	every last row/.style={after row=\hline},
 	]{metrics/dtw/ECG200_dtw.csv}
+	\begin{table}[H]
+		\centering
+		\caption{2-Means con DTW su ECG200. \textbf{Gli score dell'autoencoder con 2-Means sono migliori rispetto a questi}. La causa potrebbe essere la dimensione ridotta del dataset che non ha permesso TSLearn di operare bene.}
+	\end{table}
 \end{center}
-\textbf{Gli score dell'autoencoder con 2-Means sono migliori rispetto a questi}. La causa potrebbe essere la dimensione ridotta del dataset che non ha permesso TSLearn di operare bene.
 
 \subsubsection{ChlorineConcentration}
 \begin{center}
@@ -97,20 +103,156 @@ Di seguito sono riportati i risultati del clustering dei dataset in esame, con p
 	},
 	every last row/.style={after row=\hline},
 	]{metrics/dtw/ChlorineConcentration_dtw.csv}
+	\begin{table}[H]
+		\centering
+		\caption{3-Means con DTW su ChlorineConcentration. \textbf{Gli score dell'autoencoder con 3-Means sono quasi identici a questi}. L'autoencoder è allora riuscito ad estrarre bene le caratteristiche di queste TS, cosa non colta durante l'analisi precedente.}
+	\end{table}
 \end{center}
-\textbf{Gli score dell'autoencoder con 3-Means sono quasi identici a questi}. L'autoencoder è allora riuscito ad estrarre bene le caratteristiche di queste TS, cosa non colta durante l'analisi precedente.
 
 \subsubsection{FordA}
+\begin{center}
+	\pgfplotstabletypeset[
+	col sep=comma,
+	string type,
+	every head row/.style={
+		before row={\hline
+			\multicolumn{2}{c|}{\textbf{FordA}} &
+			\multicolumn{1}{c|}{Internal} & \multicolumn{3}{c}{External} \\
+		},
+		after row=\hline
+	},
+	every last row/.style={after row=\hline},
+	]{metrics/dtw/FordA_dtw.csv}
+	\begin{table}[H]
+		\centering
+		\caption{2-Means con DTW su FordA. ++++TODO++++}
+	\end{table}
+\end{center}
 
 \subsubsection{FordB}
+\begin{center}
+	\pgfplotstabletypeset[
+	col sep=comma,
+	string type,
+	every head row/.style={
+		before row={\hline
+			\multicolumn{2}{c|}{\textbf{FordB}} &
+			\multicolumn{1}{c|}{Internal} & \multicolumn{3}{c}{External} \\
+		},
+		after row=\hline
+	},
+	every last row/.style={after row=\hline},
+	]{metrics/dtw/FordB_dtw.csv}
+	\begin{table}[H]
+		\centering
+		\caption{2-Means con DTW su FordB. ++++TODO++++}
+	\end{table}
+\end{center}
 
 \subsubsection{PhalangesOutlineCorrect}
 
 \subsubsection{RefrigerationDevices}
+\begin{center}
+	\pgfplotstabletypeset[
+	col sep=comma,
+	string type,
+	every head row/.style={
+		before row={\hline
+			\multicolumn{2}{c|}{\textbf{RefrigerationDevices}} &
+			\multicolumn{1}{c|}{Internal} & \multicolumn{3}{c}{External} \\
+		},
+		after row=\hline
+	},
+	every last row/.style={after row=\hline},
+	]{metrics/dtw/RefrigerationDevices_dtw.csv}
+	\begin{table}[H]
+		\centering
+		\caption{3-Means con DTW su RefrigerationDevices. ++++TODO++++}
+	\end{table}
+\end{center}
 
 \subsubsection{TwoLeadECG}
 
 \subsubsection{TwoPatterns}
 
-\section{Confronto con tecniche di feature extraction and selection basate su TSFresh}
-+++Confronto risutati Antonio e Claudio++++
+\section{Confronto con altre tecniche di feature extraction and selection}
+Sono stati reperiti alcuni risultati di clustering sui dataset in esame attuando però altre tecniche di feature extraction and selection. Il clustering è stato fatto con k-Means con k pari al numero di classi del dataset e su un numero differente di feature estratte in modo diverso:
+\begin{itemize}
+	\item Tutte le feature estratte da \textbf{TSFresh};
+	\item Feature rilevanti selezionate da TSFresh;
+	\item Feature rilevanti selezionate dall'algoritmo \textbf{NDFS};
+	\item Feature rilevanti selezionate dall'algoritmo \textbf{Lap Score}.
+\end{itemize}
+Degli score riportati nelle seguenti tabelle, solamente silhouette, Davies-Bouldin e purity verranno usate per il confronto.
+
+\subsubsection{ECG5000}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{av/ecg5000_av.png}
+	\caption{ECG5000 con tecniche di feature extraction and selection. TSFresh ed NDFS riportano DB e purity simili a quelli dell'autoencoder, mentre LapScore inizia a peggiorarli di molto. L'autoencoder ha migliore silhouette in ogni caso.}
+	\label{fig:ecg5000_av}
+\end{figure}
+
+\subsubsection{ECG200}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{av/ecg200_av.png}
+	\caption{ECG200 con tecniche di feature extraction and selection. La purity è molto simile ai risultati dell'autoencoder. La silhouette dell'autoencoder è migliore rispetto a TSFresh e NDFS, ma peggiore rispetto a Lap Score. Analogo discorso per DB, eccetto che per le feature rilevanti di TSFresh è molto simile.}
+	\label{fig:ecg200_av}
+\end{figure}
+
+\subsubsection{ChlorineConcentration}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{av/chlorine_av.png}
+	\caption{ChlorineConcentration con tecniche di feature extraction and selection. La silhouette ritornata dall'autoencoder è peggiore, in particolar modo rispetto ad NDFS e Lap Score, mentre il DB è simile, alternando casi in cui l'autoencoder vince rispetto a qualche tecnica. La purity è pressocché indentica per tutti.}
+	\label{fig:chlorine_av}
+\end{figure}
+
+\subsubsection{FordA}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{av/forda_av.png}
+	\caption{FordA con tecniche di feature extraction and selection. +++TODO+++}
+	\label{fig:forda_av}
+\end{figure}
+
+\subsubsection{FordB}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{av/fordb_av.png}
+	\caption{FordB con tecniche di feature extraction and selection. +++TODO+++}
+	\label{fig:fordb_av}
+\end{figure}
+
+\subsubsection{PhalangesOutlineCorrect}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{av/phalanges_av.png}
+	\caption{PhalangesOutlineCorrect con tecniche di feature extraction and selection. Silhouette e DB sono variabili: qualche volta sono migliori nell'autoencoder (caso TSFresh e una parte di NDFS), altre volte è peggiore (caso Lap Score e l'altra parte di NDFS). La purity è pressocché identica in tutti i casi.}
+	\label{fig:phalanges_av}
+\end{figure}
+
+\subsubsection{RefrigerationDevices}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{av/refrigeration_av.png}
+	\caption{RefrigerationDevices con tecniche di feature extraction and selection. +++TODO+++}
+	\label{fig:refrigeration_av}
+\end{figure}
+
+\subsubsection{TwoLeadECG}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{av/twoleadecg_av.png}
+	\caption{TwoLeadECG con tecniche di feature extraction and selection. Silhouette e DB dell'autoencoder sono leggermente peggiori delle migliori silhouette e DB ottenuti in una delle esecuzioni di Lap Score, quindi mediamente l'autoencoder ha avuto score migliori. La purity è pressocché identica in tutti i casi eccetto il caso delle feature rilevanti di TSFresh dove è nettamente superiore.}
+	\label{fig:twoleadecg_av}
+\end{figure}
+
+\subsubsection{TwoPatterns}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{av/twopatterns_av.png}
+	\caption{TwoPatterns con tecniche di feature extraction and selection. Sebbene quella dell'autoencoder sia una delle silhouette peggiori, è in generale molto bassa in tutti i casi, quindi potrebbe essere molto legato alla natura dei dati o di k-Means. Analogo ragionamento per DB. La purity è molto simile in tutti i casi, sebbene non siano ottimi valori.}
+	\label{fig:twopatterns_av}
+\end{figure}
