@@ -89,13 +89,27 @@ Come i tradizionali autoencoder, i \textbf{Variational Autoencoders} (VAEs) cerc
 Ciò che rende particolare questa tipologia di autoencoder è che il modello prevede un \textbf{approccio probabilistico} per descrivere le osservazioni nello spazio latente. Anziché costruire un autoencoder il cui output è un singolo valore per ogni attributo del vettore dei fattori latenti, questo viene formulato in maniera tale da descrivere una \textbf{distribuzione di probabilità} (solitamente una distribuzione normale) per ogni attributo latente.\\
 Costruendo l'encoder in questo modo otteniamo un range di possibili valori, cioè la distribuzione appunto, e l'esito è quello di forzare il modello a rappresentare l'input in uno spazio latente continuo e regolare rispetto ai valori iniziali. Per ogni campione della \textbf{distribuzione latente} ci aspettiamo che il decoder sia in grado di ricostruire l'input. I valori che sono vicini uno all'altro nello spazio latente in questo modo vengono ricostruiti in maniera simile. 
 
-\section{Descrizione del modello proposto}
-++++Perché lo abbiamo usato noi in questo caso
-Struttura: stacked di LSTM insomma, sia per encoder che per decoder, e size coding layer
-Come lo abbiamo usato (setting iperparametri, cosa abbiamo preso da esso (i vettori latenti) e cosa no)++++
+\section{Modello proposto}
+\subsection{Architettura e motivazione}
+Il modello proposto è composto da quattro componenti fondamentali:
+\begin{itemize}
+	\item Il primo componente è l'\textbf{encoder} costituito da una "Stacked LSTM". Questa prende in input un vettore che descrive una TS;
+	\item Successivamente vi è una componente adibita al mappare l'\textbf{hidden vector} ottenuto dall'encoder nel vettore dei \textbf{fattori latenti}. In questo layer viene effettuato il train dei punti nello spazio latente per avere media pari a zero e varianza unitaria (il perché è discusso nella prossima sezione relativa al training).
+	\item Il componente successivo deve fare il processo inverso al precedente, cioè mappare il vettore latente nel vettore input per il decoder;
+	\item l'ultima componente è il \textbf{decoder} che è un LSTM speculare a quella dell'encoder che prende il singolo vettore ricevuto e lo mappa in una sequenza di vettori in output, cioè cerca di ricostruire gli input.
+\end{itemize}
+
+L'idea dietro il modello è quella che attraverso le LSTM si possano ottenere le caratteristiche più significative (feature) delle serie temporali in input, e questo è chiaro dato che se il modello converge vuol dire che il vettore latente è sufficientemente preciso nel ricostruire l'input iniziale. Il vettore latente che si ottiene viene poi utilizzato per effettuare il clustering con k-means.\\
+Il cuore del modello è sicuramente l'utilizzo delle LSTM: nello studio delle serie temporali, le LSTM sono attualmente considerate il miglior "strumento" per ottenere buoni risultati nella maggior parte dei casi. Il problema delle serie temporali è infatti quello di avere molto rumore e nascondere influenze nascoste nei dati e modelli troppo semplici non si comportano adeguatamente su questo tipo di dati, mentre le LSTM riescono a superare questi problemi, ma anche quelli relativi agli andamenti irregolari come ad esempio avere linearità e non linearità nella stessa serie temporale.
 
 \subsection{Training}
-++++Come è stato allenato il modello (tensor flow e l'idea descritta con snippet notebook)++++
+L'obiettivo del training è quello di imparare la funzione di identità in maniera tale che la sequenza dei vettori di input e output sia simile.\\ 
+Come detto, è stato usato un approccio probabilistico: l'obiettivo è ricavare i parametri della distribuzione Gaussiana dell'hidden vector, cioè $\mu$ e $\sigma$, cercando di minimizzare il \textbf{logaritmo di verosimiglianza} dell'input sotto questa distribuzione.\\
+La scelta di imporre la distribuzione gaussiana è stata dettata sia dalla letteratura disponibile che consiglia questa distribuzione, ma anche del fatto che altrimenti non sarebbe stato possibile utilizzare la tecnica della discesa stocastica del gradiente nella variante \textbf{Adam} (Adaptive moment estimation), anch'esso in letteratura ritenuto il miglior optimizer per questo tipo di problemi.
+
+
+mposing a Gaussian distribution serves for training purposes only. If we'd use a Dirac delta function (i.e. x=f(z) deterministically), we wouldn't be able to train the model using gradient descent!
+Durante il training è stato necessario lavorare sugli \textbf{iperparametri} della rete ... 
 
 \section{Clustering con k-Means}
 Per poter sfruttare la riduzione della dimensionalità compiuta dall'autoencoder, tutto il test set (di default corrispondente al 20\% del dataset) viene dato in input all'autoencoder per estrarne i relativi vettori latenti, ovvero la codifica delle TS di test.\\
