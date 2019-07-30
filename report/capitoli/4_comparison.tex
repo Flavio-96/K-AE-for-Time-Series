@@ -41,8 +41,8 @@ Il clustering mediante l'impiego di DWT è stato realizzato sfruttando la librer
 Essa, infatti, come evidenziato dal nome stesso, consiste in una specializzazione del Machine Learning focalizzato sulle Time Series.
 La libreria non solo offre metodi per il calcolo delle metriche proprie delle TS (\textit{DTW},\textit{Soft-DTW}, ecc.), ma anche veri e propri algoritmi di Machine Learning in una variante modificata \textit{ad hoc} per le TS, sia di tipo supervised che unsupervised (es. \textit{SVM}, \textit{TimeSeriesKMeans}).\\
 \\
-Proprio uno di questi algoritmi, \textit{TimeSeriesKMeans}, è stato impiegato per il nostro esperimento. 
-Esso consiste in una versione modificata del noto algoritmo di clustering, abile nel calcolo dei cluster usando non solo la metrica euclidea, ma anche il DTW e il Soft-DTW.
+Proprio uno di questi algoritmi, \textit{TimeSeriesKMeans}, è stato impiegato per il nostro esperimento.
+Esso consiste in una versione modificata del noto algoritmo di clustering, abile nel calcolo dei cluster usando non solo la metrica euclidea, ma anche il DTW e il Soft-DTW.\\
 \\
 Di seguito sono riportati i risultati del clustering dei dataset in esame, con però alcune premesse:
 \begin{itemize}
@@ -51,237 +51,150 @@ Di seguito sono riportati i risultati del clustering dei dataset in esame, con p
 	\item Per avere un riscontro diretto con le labels presente nei dataset, il numero di cluster calcolati corrisponde al numero di classi presenti nel dataset;
 \end{itemize}
 
-\subsubsection{ECG5000}
 \begin{center}
 	\pgfplotstabletypeset[
 	col sep=comma,
 	string type,
 	every head row/.style={
 		before row={\hline
-			\multicolumn{2}{c|}{\textbf{ECG5000}} &
+			\multicolumn{3}{c|}{\textbf{}} &
 			\multicolumn{2}{c|}{Internal} & \multicolumn{3}{c}{External} \\
 		},
 		after row=\hline
 	},
 	every last row/.style={after row=\hline},
-	]{metrics/dtw/ECG5000_dtw.csv}
+	]{metrics/dtw/All_dtw.csv}
 	\begin{table}[H]
 		\centering
-		\caption{5-Means con DTW su ECG5000}
+		\caption{k-Means con DTW sui dataset in esame con relative misure.}
 	\end{table}
 \end{center}
-\textbf{Gli score dell'autoencoder sono molto simili a questi}. L'autoencoder è allora riuscito ad estrarre bene le caratteristiche degli elettrocardiogrammi, come intuito dall'analisi precedente.
 
-\subsubsection{ECG200}
-\begin{center}
-	\pgfplotstabletypeset[
-	col sep=comma,
-	string type,
-	every head row/.style={
-		before row={\hline
-			\multicolumn{2}{c|}{\textbf{ECG200}} &
-			\multicolumn{2}{c|}{Internal} & \multicolumn{3}{c}{External} \\
-		},
-		after row=\hline
-	},
-	every last row/.style={after row=\hline},
-	]{metrics/dtw/ECG200_dtw.csv}
-	\begin{table}[H]
-		\centering
-		\caption{2-Means con DTW su ECG200.}
-	\end{table}
-\end{center}
-\textbf{Gli score dell'autoencoder con 2-Means sono migliori rispetto a questi}. La causa potrebbe essere la dimensione ridotta del dataset che non ha permesso TSLearn di operare bene.
+Da questi risultati è possibile fare una serie di osservazioni:
+\begin{enumerate}
+	\item In \textit{ECG5000}, \textbf{l'autoencoder e TSLearn con 5-Means hanno tutti gli score molto simili}.\\
+	L'autoencoder è riuscito ad estrarre bene le caratteristiche degli elettrocardiogrammi, come intuito dall'analisi precedente;
 
-\subsubsection{ChlorineConcentration}
-\begin{center}
-	\pgfplotstabletypeset[
-	col sep=comma,
-	string type,
-	every head row/.style={
-		before row={\hline
-			\multicolumn{2}{c|}{\textbf{Chlorine}} &
-			\multicolumn{2}{c|}{Internal} & \multicolumn{3}{c}{External} \\
-		},
-		after row=\hline
-	},
-	every last row/.style={after row=\hline},
-	]{metrics/dtw/ChlorineConcentration_dtw.csv}
-	\begin{table}[H]
-		\centering
-		\caption{3-Means con DTW su ChlorineConcentration.}
-	\end{table}
-\end{center}
-\textbf{Gli score dell'autoencoder con 3-Means sono quasi identici a questi}. L'autoencoder è allora riuscito ad estrarre bene le caratteristiche di queste TS, cosa non colta durante l'analisi precedente.
+	\item In \textit{ECG200}, \textbf{l'autoencoder con 2-Means ha tutti gli score leggermente migliori rispetto a TSLearn}.\\
+	Le motivazioni sono le stesse di ECG5000;
 
-\subsubsection{FordA}
-\begin{center}
-	\pgfplotstabletypeset[
-	col sep=comma,
-	string type,
-	every head row/.style={
-		before row={\hline
-			\multicolumn{2}{c|}{\textbf{FordA}} &
-			\multicolumn{2}{c|}{Internal} & \multicolumn{3}{c}{External} \\
-		},
-		after row=\hline
-	},
-	every last row/.style={after row=\hline},
-	]{metrics/dtw/FordA_dtw.csv}
-	\begin{table}[H]
-		\centering
-		\caption{2-Means con DTW su FordA.}
-	\end{table}
-\end{center}
-\textbf{Tutti gli score dell'autoencoder con 2-Means sono quasi tutti peggiori}, ad eccezione del FMI, dove in entrambi i casi non è ottimale. L'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS rumorose, cosa già dedotto dall'analisi precedente. 
+	\item In \textit{ChlorineConcentration}, \textbf{l'autoencoder e TSLearn su 3-Means hanno tutti gli score molto simili}, se non per una leggera differenza per FMI.\\
+	L'autoencoder è riuscito ad estrarre bene le caratteristiche di questo tipo di TS, cosa non intuita dall'analisi precedente;
 
-\subsubsection{FordB}
-\begin{center}
-	\pgfplotstabletypeset[
-	col sep=comma,
-	string type,
-	every head row/.style={
-		before row={\hline
-			\multicolumn{2}{c|}{\textbf{FordB}} &
-			\multicolumn{2}{c|}{Internal} & \multicolumn{3}{c}{External} \\
-		},
-		after row=\hline
-	},
-	every last row/.style={after row=\hline},
-	]{metrics/dtw/FordB_dtw.csv}
-	\begin{table}[H]
-		\centering
-		\caption{2-Means con DTW su FordB.}
-	\end{table}
-\end{center}
-\textbf{Gli score interni dell'autoencoder con 2-Means sono tutti peggiori}, mentre gli score esterni risultano abbastanza simili. Similmente a FordA, l'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS rumorose, cosa già dedotto dall'analisi precedente. 
+	\item In \textit{FordA}, \textbf{l'autoencoder con 2-Means ha tutti gli score ben peggiori rispetto a TSLearn}, ad eccezione del FMI, dove in entrambi i casi è comunque non ottimale.\\ L'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS "rumorose", come intuito dall'analisi precedente;
 
-\subsubsection{PhalangesOutlineCorrect}
-+++++TODO++++
+	\item In \textit{FordB}, \textbf{l'autoencoder con 2-Means ha gli score interni ben peggiori di quelli di TSLearn}, mentre quelli esterni sono simili.\\
+	Similmente a FordA, l'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS, come intuito dall'analisi precedente;
 
-\subsubsection{RefrigerationDevices}
-\begin{center}
-	\pgfplotstabletypeset[
-	col sep=comma,
-	string type,
-	every head row/.style={
-		before row={\hline
-			\multicolumn{2}{c|}{\textbf{RefrigerationDevices}} &
-			\multicolumn{2}{c|}{Internal} & \multicolumn{3}{c}{External} \\
-		},
-		after row=\hline
-	},
-	every last row/.style={after row=\hline},
-	]{metrics/dtw/RefrigerationDevices_dtw.csv}
-	\begin{table}[H]
-		\centering
-		\caption{3-Means con DTW su RefrigerationDevices.}
-	\end{table}
-\end{center}
-Similmente a FordA, \textbf{Tutti gli score dell'autoencoder con 3-Means sono quasi tutti peggiori}, ad eccezione del FMI, dove in entrambi i casi non è ottimale. L'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS rumorose, cosa già dedotto dall'analisi precedente. 
+	\item In \textit{PhalangesOutlineCorrect}, \textbf{l'autoencoder con 2-Means ha qualche score leggermente peggiore rispetto a TSLearn}.\\
+	L'autoencoder è riuscito ad estrarre abbastanza bene le caratteristiche di questo tipo di TS, magari c'è bisogno di alcune modifiche agli iperparametri per poter migliorarne la qualità;
 
-\subsubsection{TwoLeadECG}
-\begin{center}
-	\pgfplotstabletypeset[
-	col sep=comma,
-	string type,
-	every head row/.style={
-		before row={\hline
-			\multicolumn{2}{c|}{\textbf{TwoLeadECG}} &
-			\multicolumn{2}{c|}{Internal} & \multicolumn{3}{c}{External} \\
-		},
-		after row=\hline
-	},
-	every last row/.style={after row=\hline},
-	]{metrics/dtw/TwoLeadECG_dtw.csv}
-	\begin{table}[H]
-		\centering
-		\caption{2-Means con DTW su TwoLeadECG.}
-	\end{table}
-\end{center}
-\textbf{Il DB dell'autoencoder con 2-Means è migliore}. Le restanti misure sono pressocché simili.
+	\item In \textit{RefrigerationDevices}, \textbf{l'autoencoder con 3-Means ha tutti gli score ben peggiori rispetto a TSLearn}, ad eccezione del FMI, dove in entrambi i casi è comunque non ottimale.\\
+	Quasi identicamente a FordA, l'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS "rumorose", come intuito dall'analisi precedente;
 
-\subsubsection{TwoPatterns}
-++++TODO++++
+	\item In \textit{TwoLeadECG}, \textbf{l'autoencoder e TSLearn con 2-Means hanno tutti gli score molto simili}, ad eccezione del DB dove l'autoencodere è migliore.\\
+	Questa analisi non è pienamente affidabile perché il test set fornito è troppo piccolo, quindi gli score sono soggetti a molte variazioni in caso di riesecuzioni.
+
+	\item In \textit{TwoPatterns}, \textbf{l'autoencoder con 4-Means ha tutti gli score ben peggiori rispetto a TSLearn}, ad eccezione del DB, dove resta comunque non ottimale.\\
+	Similmente a FordA, l'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS "rumorose", come intuito dall'analisi precedente;
+\end{enumerate}
 
 \section{Confronto con altre tecniche di feature extraction and selection}
 Sono stati reperiti alcuni risultati di clustering sui dataset in esame attuando però altre tecniche di feature extraction and selection. Il clustering è stato fatto con k-Means con k pari al numero di classi del dataset e su un numero differente di feature estratte in modo diverso:
 \begin{itemize}
-	\item Tutte le feature estratte da \textbf{TSFresh};
-	\item Feature rilevanti selezionate da TSFresh;
+	\item \textbf{Tutte le feature estratte} da \textit{TSFresh};
+	\item \textbf{Feature rilevanti} selezionate da \textit{TSFresh};
 	\item Feature rilevanti selezionate dall'algoritmo \textbf{NDFS};
 	\item Feature rilevanti selezionate dall'algoritmo \textbf{Lap Score}.
 \end{itemize}
-Degli score riportati nelle seguenti tabelle, solamente silhouette, Davies-Bouldin e purity verranno usate per il confronto.
+I seguenti risultati riportano solo gli score silhouette, Davies-Bouldin e purity, quindi verranno usati solamente questi per il confronto.
 
 \subsubsection{ECG5000}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{av/ecg5000_av.png}
-	\caption{ECG5000 con tecniche di feature extraction and selection. TSFresh ed NDFS riportano DB e purity simili a quelli dell'autoencoder, mentre LapScore inizia a peggiorarli di molto. L'autoencoder ha migliore silhouette in ogni caso.}
+	\includegraphics[width=0.9\linewidth]{av/ecg5000_av.png}
+	\caption{ECG5000 con tecniche di feature extraction and selection.\\
+	\\
+	\textbf{L'autoencoder ha migliore silhouette rispetto a tutti gli algoritmi}. DB e Purity sono simili per autoencoder, TSFresh ed NDFS. Lap Score ha gli score peggiori.}
 	\label{fig:ecg5000_av}
 \end{figure}
 
 \subsubsection{ECG200}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{av/ecg200_av.png}
-	\caption{ECG200 con tecniche di feature extraction and selection. La purity è molto simile ai risultati dell'autoencoder. La silhouette dell'autoencoder è migliore rispetto a TSFresh e NDFS, ma peggiore rispetto a Lap Score. Analogo discorso per DB, eccetto che per le feature rilevanti di TSFresh è molto simile.}
+	\includegraphics[width=0.9\linewidth]{av/ecg200_av.png}
+	\caption{ECG200 con tecniche di feature extraction and selection.\\
+	\\
+	\textbf{L'autoencoder ha migliore DB rispetto a tutti gli algoritmi, e silhouette migliore rispetto a TSFresh e NDFS, ma peggiore rispetto a Lap Score}. La purity è simile per autoencoder, TSFresh e Lap Score.}
 	\label{fig:ecg200_av}
 \end{figure}
 
 \subsubsection{ChlorineConcentration}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{av/chlorine_av.png}
-	\caption{ChlorineConcentration con tecniche di feature extraction and selection. La silhouette ritornata dall'autoencoder è peggiore, in particolar modo rispetto ad NDFS e Lap Score, mentre il DB è simile, alternando casi in cui l'autoencoder vince rispetto a qualche tecnica. La purity è pressocché indentica per tutti.}
+	\includegraphics[width=0.9\linewidth]{av/chlorine_av.png}
+	\caption{ChlorineConcentration con tecniche di feature extraction and selection.\\
+	\\
+	\textbf{L'autoencoder ha purity simile a tutti e quattro gli algoritmi}, DB peggiore solo rispetto a TSFresh per feature rilevanti, e silhouette peggiore in tutti i casi, specialmente rispetto ad NDFS e Lap Score, nei quali è quasi massima.}
 	\label{fig:chlorine_av}
 \end{figure}
 
 \subsubsection{FordA}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{av/forda_av.png}
-	\caption{FordA con tecniche di feature extraction and selection. Gli score interni ritornati dall'autoencoder sono di gran lunga peggiori in tutti i casi, mentre la purity è pressocché identica. DB è particolarmente ottimale con NDFS.}
+	\includegraphics[width=0.9\linewidth]{av/forda_av.png}
+	\caption{FordA con tecniche di feature extraction and selection.\\
+	\\
+	\textbf{L'autoencoder ha silhouette e DB di gran lunga peggiori rispetto a quattro gli algoritmi}, mentre la purity è simile in tutti i casi. DB è quasi ottimale con NDFS.}
 	\label{fig:forda_av}
 \end{figure}
 
 \subsubsection{FordB}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{av/fordb_av.png}
-	\caption{FordB con tecniche di feature extraction and selection. Come per FordA, gli score interni ritornati dall'autoencoder sono di gran lunga peggiori in tutti i casi, mentre la purity è pressocché identica. DB è particolarmente ottimale con Lap Score.}
+	\includegraphics[width=0.9\linewidth]{av/fordb_av.png}
+	\caption{FordB con tecniche di feature extraction and selection.\\
+	\\
+	\textbf{L'autoencoder ha silhouette e DB di gran lunga peggiori rispetto a quattro gli algoritmi}, mentre la purity è simile in tutti i casi. DB è quasi ottimale con Lap Score. E' una situazione simile a quella di FordA.}
 	\label{fig:fordb_av}
 \end{figure}
 
 \subsubsection{PhalangesOutlineCorrect}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{av/phalanges_av.png}
-	\caption{PhalangesOutlineCorrect con tecniche di feature extraction and selection. Silhouette e DB sono variabili: qualche volta sono migliori nell'autoencoder (caso TSFresh e una parte di NDFS), altre volte è peggiore (caso Lap Score e l'altra parte di NDFS). La purity è pressocché identica in tutti i casi.}
+	\includegraphics[width=0.9\linewidth]{av/phalanges_av.png}
+	\caption{PhalangesOutlineCorrect con tecniche di feature extraction and selection.\\
+	\\
+	\textbf{L'autoencoder ha purity simile a tutti e quattro gli algoritmi}, mentre ha silhouette e DB variabili: migliori rispetto a TSFresh e una parte di NDFS, peggiori rispetto a Lap Score e un'altra parte di NDFS.}
 	\label{fig:phalanges_av}
 \end{figure}
 
 \subsubsection{RefrigerationDevices}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{av/refrigeration_av.png}
-	\caption{RefrigerationDevices con tecniche di feature extraction and selection. Con la feature selection di NDFS e Lap Score la silhouette migliora, mentre resta molto bassa con l'autoencoder o TSFresh. DB dell'autoencoder è peggiore. La purity è abbastanza simile in tutti i casi, a meno di leggere differenze.}
+	\includegraphics[width=0.9\linewidth]{av/refrigeration_av.png}
+	\caption{RefrigerationDevices con tecniche di feature extraction and selection.\\
+	\\
+	\textbf{L'autoencoder ha purity simile a tutti e quattro gli algoritmi, a meno di leggere differenza}, mentre ha silhouette e DB ben peggiori rispetto a tutti gli algoritmi. In particolare, la silhouette migliora con NDFS e Lap Score.}
 	\label{fig:refrigeration_av}
 \end{figure}
 
 \subsubsection{TwoLeadECG}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{av/twoleadecg_av.png}
-	\caption{TwoLeadECG con tecniche di feature extraction and selection. Silhouette e DB dell'autoencoder sono leggermente peggiori delle migliori silhouette e DB ottenuti in una delle esecuzioni di Lap Score, quindi mediamente l'autoencoder ha avuto score migliori. La purity è pressocché identica in tutti i casi eccetto il caso delle feature rilevanti di TSFresh dove è nettamente superiore.}
+	\includegraphics[width=0.9\linewidth]{av/twoleadecg_av.png}
+	\caption{TwoLeadECG con tecniche di feature extraction and selection.\\
+	\\
+	\textbf{L'autoencoder ha silhouette e DB mediamente migliori di tutti e quattro gli algoritmi}, infatti ci sono alcune esecuzioni di Lap Score dove invece si ha una situazione ribaltata. La purity è simile in quasi tutti i casi.}
 	\label{fig:twoleadecg_av}
 \end{figure}
 
 \subsubsection{TwoPatterns}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{av/twopatterns_av.png}
-	\caption{TwoPatterns con tecniche di feature extraction and selection. Sebbene quella dell'autoencoder sia una delle silhouette peggiori, è in generale molto bassa in tutti i casi, quindi potrebbe essere molto legato alla natura dei dati o di k-Means. Analogo ragionamento per DB. La purity è molto simile in tutti i casi, sebbene non siano ottimi valori.}
+	\includegraphics[width=0.9\linewidth]{av/twopatterns_av.png}
+	\caption{TwoPatterns con tecniche di feature extraction and selection.\\
+	\\
+	\textbf{L'autoencoder ha silhouette e DB di gran lunga peggiori rispetto ai quattro algoritmi}, tuttavia la silhouette dei quattro algoritmi è comunque molto bassa. La purity è molto simile in tutti casi, sebbene anche essa risulti molto bassa.}
 	\label{fig:twopatterns_av}
 \end{figure}
