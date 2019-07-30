@@ -33,7 +33,7 @@ Chiaramente, è possibile rendere più profonda una RNN, ed esistono diversi mod
 \end{itemize}
 
 \subsection{LSTM}
-Come evidenziato da bengio et al.\cite{long_term}, il modello standard di RNN nella pratica soffre di un problema long-term dependencies. Man mano che la rete compie un alto numero di ripetizioni del layer ricorrente, le caratteristiche apprese dalla prime ripetizioni iniziano a diventare meno rilevanti, quasi come se la rete iniziasse a dimenticare cosa ha fatto nel passato non recente. In alcuni casi è importante mantenere informazioni che risalgono ad un passato meno recente.\\
+Come evidenziato da Bengio et al.\cite{long_term}, il modello standard di RNN nella pratica soffre di un problema long-term dependencies. Man mano che la rete compie un alto numero di ripetizioni del layer ricorrente, le caratteristiche apprese dalla prime ripetizioni iniziano a diventare meno rilevanti, quasi come se la rete iniziasse a dimenticare cosa ha fatto nel passato non recente. In alcuni casi è importante mantenere informazioni che risalgono ad un passato meno recente.\\
 \\
 Per risolvere questo problema, Hochreiter et al.\cite{lstm} hanno presentato la più applicata implementazione di RNN, ovvero le reti \textbf{LSTM, Long Short Term Memory}.\\
 Il layer ricorrente di una LSTM segue una precisa struttura, ed è chiamato \textbf{cella LSTM}. Mentre nelle RNN standard i layer ricorrenti sono composti da neuroni che applicano una qualsiasi funzione di attivazione, un layer LSTM è invece composto da quattro sotto-layer, che applicano delle funzioni più complesse.
@@ -51,7 +51,7 @@ Il layer ricorrente di una LSTM segue una precisa struttura, ed è chiamato \tex
 \end{figure}
 La linea superiore della cella porta l'output superiore della cella precedente direttamente alla cella successiva, a meno di alcune operazioni lineari. Serve a mandare in avanti la conoscenza del passato senza modificarla troppo.\\
 \\
-La cella LSTM non segue necessariamente lo schema suddetto, ed esistono altre varianti, tutte accomunate dall'idea della linea superiore che preserva le long-term dependencies.\\
+La cella LSTM non segue necessariamente lo schema suddetto, ed esistono altre varianti, tutte accomunate dall'idea di avere un flusso che preservi le long-term dependencies.\\
 La \textbf{hidden size}, cioè dimensione dello stato nascosto, determina la dimensione dei quattro sotto-layer, ovvero il numero dei loro neuroni, quindi il numero totale dei neuroni presenti in una LSTM è dato dalla $hidden size * 4$. Tipicamente, al crescere della hidden size cresce anche la capacità di memorizzazione della LSTM.
 
 \section{Autoencoder}
