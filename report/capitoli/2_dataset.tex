@@ -1,27 +1,31 @@
-\section{Descrizione}
-Per l'esperimento sono stati selezionati alcuni dataset di time series dal sito \url{http://www.timeseriesclassification.com/dataset.php}.\\
-Essi sono già divisi in training e test set, ciascuno con un proprio numero di feature (ovvero la lunghezza della time series) uguale per tutti i sample.\\
-Ogni time series ha una sua \textbf{label}, corrispondente ad una classe di riferimento, assegnata dall'autore del dataset.\\
-Sono stati scelti di diversi dimensioni e caratteristiche:
+\section{Introduzione}
+In questo capitolo, nella sezione \textbf{\ref{sec:descrizione}} vengono elencati e descritti in generale i dataset presi in esame, mentre nella sezione \textbf{\ref{sec:profiling}} viene fatto del data profiling per poter ottenere qualche insight sui dati, in particolare nella sottosezione \textbf{\ref{sec:cleaning}} i dati vengono puliti e preparati all'uso.\\
+Infine, nella sezione \textbf{\ref{sec:considerazioni}} vengono tratte alcune considerazioni su tutti i dataset.
+
+\section{Descrizione} \label{sec:descrizione}
+Per l'esperimento sono stati selezionati alcuni dataset di time series dal sito \url{http://www.timeseriesclassification.com/dataset.php} in formato TSV (Tab Separated Value).\\
+Ciascuna TS ha una \textbf{label} associata, corrispondente ad una classe di riferimento assegnata dagli autori dei dataset.\\
+Sono stati scelti di dimensioni e caratteristiche differenti l'uno dall'altro:
 \begin{itemize}
-	\item \textbf{ECG5000}, contenente 5000 elettrocardiogrammi (ECG) ottenuti da pazienti affetti da insufficienza cardiaca. Le classi sono state assegnati per annotazione automatica;
-	\item \textbf{ECG200}, contenente 200 elettrocardiogrammi ottenuti da pazienti affetti da insufficienza cardiaca. Le due classi rappresentano gli ECG di soggetti sani e di soggetti affetti da infarto del miocardio;
+	\item \textbf{ECG5000}, contenente 5000 elettrocardiogrammi (ECG) ottenuti da pazienti affetti da insufficienza cardiaca. Le cinque classi sono state assegnati per annotazione automatica dagli autori;
+	\item \textbf{ECG200}, contenente 200 elettrocardiogrammi ottenuti da pazienti affetti da insufficienza cardiaca. Le due classi rappresentano gli ECG di soggetti sani e di soggetti affetti da infarto al miocardio;
 	\item \textbf{ChlorineConcentration}, contenente dati relativi alla presenza di cloro nell'acqua, recuperati usando 166 sensori lungo una rete idraulica per 15 giorni;
-	\item \textbf{FordA}, contenente dati di rumori del motore di autovetture ottenuti sotto normali condizioni d'uso;
-	\item \textbf{FordB}, contenente dati di rumori del motore di autovetture, alcuni ottenuti sotto normali condizioni d'uso, mentre altri sotto condizioni di elevato rumore;
-	\item \textbf{PhalangesOutlinesCorrect}, contenente dati relativi ad outline di falangi, corretti ed errati, ottenuti usando algoritmi di estrazione di outline da immagini di radiografie delle mani;
+	\item \textbf{FordA}, contenente dati relativi al rumore di motori di autovetture ottenuti sotto normali condizioni d'uso;
+	\item \textbf{FordB}, contenente dati relativi al rumore di motori di autovetture, alcuni sotto normali condizioni d'uso, altri sotto condizioni di elevato rumore;
+	\item \textbf{PhalangesOutlinesCorrect}, contenente dati relativi ad outline di falangi ottenuti usando algoritmi di estrazione di outline da immagini di radiografie delle mani. Questi outline possonoe essere corretti o errati;
 	\item \textbf{RefrigerationDevices}, contenente dati relativi al consumo di tre diversi dispositivi di refrigerazione domestici;
 	\item \textbf{TwoLeadECG}, contenente elettrocardiogrammi di due tipi diversi di segnale;
-	\item \textbf{TwoPatterns}, contenente serie temporali generate artificalmente, ciascuna caratterizzata da una coppia di pattern nel segnale: up-up, up-down, down-up e down-down.
+	\item \textbf{TwoPatterns}, contenente TS generate artificalmente, ciascuna caratterizzata da una coppia di pattern nel segnale: up-up, up-down, down-up e down-down.
 \end{itemize}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{ecg200.png}
-	\caption{Plot di alcune TS classificate in ECG200. Si nota facilmente che sebbene aggregate insieme, le TS della classe 2 non presentano andamenti simili.}
+	\makebox[0pt]{\includegraphics[width=1.2\paperwidth]{ecg200.png}}
+	\caption{Plot di alcune TS classificate in ECG200. Si nota facilmente che, sebbene classificate insieme, le TS della classe 2 non presentano sembrano avere andamenti simili.}
 	\label{fig:ecg200}
 \end{figure}
 
+Di seguito sono riportate le caratteristiche principali dei dataset:
 \begin{table}[H]
 	\centering
 	\begin{tabularx}{\textwidth}{X c c c c}
@@ -30,7 +34,7 @@ Sono stati scelti di diversi dimensioni e caratteristiche:
 		\hline
 		\textbf{ECG5000} & 500 & 4500 & 140 & 5\\
 		\textbf{ECG200} & 100 & 100 & 96 & 2\\
-		\textbf{ChlorineConc.} & 476 & 3840 & 166 & 3\\
+		\textbf{Chlorine} & 476 & 3840 & 166 & 3\\
 		\textbf{FordA} & 3601 & 1320 & 500 & 2\\
 		\textbf{FordB} & 3636 & 810 & 500 & 2\\
 		\textbf{Phalanges} & 1800 & 858 & 80 & 2\\
@@ -38,24 +42,26 @@ Sono stati scelti di diversi dimensioni e caratteristiche:
 		\textbf{TwoLeadECG} & 23 & 1139 & 82 & 2\\
 		\textbf{TwoPatterns} & 1000 & 4000 & 128 & 4\\
 	\end{tabularx}
-	\caption{Caratteristiche dei dataset}
+	\caption{Caratteristiche principali dei dataset (i nomi sono stati abbreviati per una migliora leggibilità).}
 	\label{tab:datasets}
 \end{table}
 
-\section{Data Profiling}
-Attraverso la libreria Python \textit{pandas} è stato possibile fare un po' di data profiling, andando ad osservare meglio nel dettaglio la struttura di questi dataset.\\
+\section{Data Profiling} \label{sec:profiling}
+Attraverso la libreria Python \textit{Pandas} è stato possibile fare un po' di data profiling, andando ad osservare nel dettaglio la struttura di questi dataset.\\
 Sono emerse alcune informazioni interessanti:
 \begin{itemize}
-	\item Tipicamente le label sono interi non negativi, che partono da 0 o da 1, ma in alcuni dataset sono presenti \textbf{label negative};
-	\item Le classi di molti dataset sono \textbf{sbilanciate}, ad esempio in ECG5000 ci sono 2919 sample nella classe 1, mentre solo 24 nella classe 5;
-	\item Sono stati identificati molti valori \textbf{outlier}, infatti alcune colonne hanno una distrubuzione di valori più ampia rispetto alle altre, probabilmente dovuti ad errori di misurazione dei sensori;
-	\item Non ci sono \textbf{valori nulli}.
+	\item Tipicamente le label sono valori interi non negativi, che partono da 0 o da 1, ma in alcuni dataset sono state usate \textbf{label negative};
+	\item Le classi di alcuni dataset sono \textbf{sbilanciate}, ad esempio in ECG5000 ci sono 2919 sample nella classe 1, mentre solo 24 nella classe 5;
+	\item Tutte le \textbf{time series sono della stessa lunghezza};
+	\item \textbf{Ciascuna osservazione è un singolo valore scalare}, quindi i dataset hanno profondità pari a 1;
+	\item Non ci sono \textbf{valori nulli}, quindi tutte le osservazioni sono definite;
+	\item Sono stati identificati molti valori \textbf{outlier}, infatti alcune colonne hanno una distrubuzione di valori molto più ampia rispetto alle altre, probabilmente dovuti ad errori di misurazione dei sensori;
+	\item Le dimensioni di training e test set sono sbilanciate e con una cattiva distribuzione delle TS rispetto alle diverse classi.
 \end{itemize}
-Lo sbilanciamento è stato individuato facendo il raggruppamento per la colonna 0, ovvero quello della label assegnata ad ogni time series, mentre gli outlier sono stati individuati guardando la media, la deviazione standard e i quartili di ciascuna colonna, oltre che il plot dei dati.\\
-
-++CELLE RELATIVE AL SOLO PROFILING PANDAS++
-
-Di seguito un riassunto della distribuzione delle classi di ciascun dataset (indipendente dal valore della singola label):
+Lo sbilanciamento è stato individuato facendo il \textbf{raggruppamento rispetto alla colonna 0}, ovvero quella relativa alle label assegnate alle TS, mentre gli outlier sono stati individuati \textbf{guardando la media, la deviazione standard e i quartili di ciascuna colonna}, oltre che il plot dei dati.\\
+L'assenza di valori null è stata possibile grazie al conteggio dei valori null di Pandas.\\
+\\
+Di seguito un riassunto della distribuzione dei valori nelle classi di ciascun dataset (il numero associato ad ogni classe non rispecchia l'effetivo valore delle label):
 \begin{table}[H]
 	\centering
 	\begin{tabularx}{\textwidth}{X c c c c c}
@@ -75,20 +81,22 @@ Di seguito un riassunto della distribuzione delle classi di ciascun dataset (ind
 	\caption{Distribuzione delle classi dei dataset}
 	\label{tab:labels}
 \end{table}
+Com'è possibile notare dalla \figurename~\ref{fig:ecg200}, alcuni dataset presentano una classificazione che non è basata sull'andamento dei dati nel tempo, bensì su altre caratteristiche dei dati stessi (nel caso di ecg200 se i pazienti fossero sani o infartuati).\\
+Questo implica necessariamente che un clustering effettuato basandosi unicamente sull'andamento della TS non potrà mai coincidere con una classificazione del genere.\\
+Questo aspetto verrà tenuto conto durante le valutazioni dei risultati.
 
-Com'è possibile notare dalla \figurename~\ref{fig:ecg200}, alcuni dataset presentano una classificazione che non è basata sull'andamento dei dati nel tempo, bensì su altre caratteristiche dei dati stessi (nel caso di ecg200 se i pazienti fossero sani o infartuati).
-Ciò necessariamente implica che un clustering effettuato basandosi unicamente sull'andamento della TS non potrà mai coincidere con una classificazione del genere.
-Ciò motiva, per alcuni dataset, uno score basso per metriche esterne.
-
-\subsection{Data Cleaning}
-Forte dei problemi individuati durante il profiling, sono state adottate alcune azioni correttive:
+\subsection{Data cleaning and preparation} \label{sec:cleaning}
+Forte dei problemi individuati durante il data profiling, sono state adottate alcune azioni correttive:
 \begin{itemize}
-	\item Tutte le label sono state modificate in modo tale da essere degli interi positivi che partono da 1 e che si incrementano unariamente. Questa pulizia è stata fatta direttamente sui file dei dataset;
-	\item Il problema dello sbilanciamento delle classi non è stato risolto poiché è una caratteristica intrinseca del dataset, però si è potuto risolvere il problema degli outlier, "tagliando" tutti i dati che andavano al di sotto del 3-percentile e oltre il 97-percentile per poi ricondurli a loro. Questo lavoro è stato fatto per ciascuna colonna di ciascun i dataset. Questa pulizia viene fatta ogni volta che viene caricato il dataset in memoria.\\
-	++CELLE DEL BEFORE/AFTER++
+	\item Tutte \textbf{le label sono state modificate} in modo tale da essere degli \textbf{interi positivi che partono da 1 e che si incrementano unariamente}, rispecchiando la numerazione presente nella tabella \ref{tab:labels}.\\
+	Questa pulizia è stata fatta direttamente sui file dei dataset;
+	
+	\item Il problema dello sbilanciamento delle classi non poteva essere risolto poiché è un elemento intrinseco dei dataset. Tuttavia, è stato possibile risolvere il problema degli outlier, \textbf{"tagliando" tutte le osservazioni che andavano al di sotto del 3-percentile oppure oltre il 97-percentile} e ricondurle a loro.\\
+	Questa pulizia viene fatta ogni volta che viene caricato un dataset in memoria.
+	
+	\item Il problema dello sbilanciamento di training e test set è stato risolto \textbf{unendo i due insiemi in memoria e poi dividerli casualmente con la regola dell'80/20\footnote{80\% dei dati è di train, mentre il restante 20\% è di test.} di default}.\\
+	Questa operazione viene fatta ogni volta che viene caricato un dataset in memoria.
 \end{itemize}
 
-\section{Considerazioni}
-Lo sbilanciamento delle classi potrebbe causare non qualche problema nella fase di valutazione del clustering, poiché diventa difficile per l'algoritmo di clustering creare cluster molto piccoli se i dati sono molto simili tra loro.\\
-\\
-Training e test set forniti a priori contenevano dati sbilanciati, quindi è stato deciso di \textbf{ricostruirli in memoria} ogni volta che vengono usati, prima fondendoli e poi dividendoli casualmente con la regola dell'80/20\footnote{80\% dei dati è di train, mentre il restante 20\% è di test} di default.
+\section{Considerazioni} \label{sec:considerazioni}
+Lo \textbf{sbilanciamento delle classi potrebbe causare qualche problema nella fase di valutazione esterna del clustering}, poiché diventa difficile per k-Means creare cluster molto piccoli se i dati sono effettivamente molto simili tra loro.
