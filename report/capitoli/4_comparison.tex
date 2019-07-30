@@ -1,10 +1,10 @@
 \section{DTW: Dynamic Time Warping}
 Il \textbf{Dynamic Time Warping} (DTW)\cite{dtw}è un algoritmo per misurare la similarità tra due TS, calcolandone il match ottimale.\\
 \\
-A differenza delle classiche funzioni di distanza, come quella Euclidea o la Manhattan, essa effettua un confronto di tipo \textbf{elastico} (non-lineare) tra i punti delle due TS, ovvero che esse non sono confrontate 1-a-1, matchando l'$i$-esimo punto della TS A con l'$i$-esimo punto della TS B, ma 1-a-n, matchando un punto della TS A con uno o più punti della TS B.\\
+A differenza delle classiche funzioni di distanza, come quella Euclidea o la Manhattan, essa effettua un confronto di tipo \textbf{elastico} (non-lineare) tra i punti delle due TS a confronto: Esse non sono confrontate 1-a-1, matchando l'$i$-esimo punto della TS A con l'$i$-esimo punto della TS B, bensì 1-a-n, matchando un punto della TS A con uno o più punti della TS B.\\
 Il confronto tra due punti matchati avviene sempre con una metrica classica, come quella Euclidea. Tutte le singole distanze tra i punti sono conservate in una \textbf{matrice di distanza}.\\
 \\
-I vincoli che vengono imposti sono i seguenti:
+Siano A e B due TS a confronto, vengono imposti i seguenti vincoli nel clacolo del DTW:
 \begin{itemize}
 	\item Un punto di una TS può essere matchato con uno o più punti dell'altra TS;
 	\item Il match tra due punti può avviene se e solo se le due TS hanno la stessa monotonia nei rispettivi punti;
@@ -31,22 +31,24 @@ I vincoli che vengono imposti sono i seguenti:
 In altre parole, il DTW cerca di "allineare" al meglio le due TS, facendo in modo che entrambe proseguano con lo stesso andamento.\\
 \\
 La similarità del DTW produce buoni risultati per le TS che rappresentano uno stesso evento ma che sono di lunghezza differente, ad esempio quando entra in gioco uno sfasamento temporale.\\
-Un individuo che pronuncia una stessa frase con lo stesso tono ma con velocità differente produrrebbe due TS molto differenti che se si confrontassero linearmente non si riuscerebbe a riconoscere lo stesso individuo, che altrimenti sarebbe possibile se si confrontassero con il DTW.\\
+Un individuo che pronuncia una stessa frase con lo stesso tono ma con velocità differente produrrebbe due TS molto differenti. Se esse venissero confrontate linearmente, non si potrebbe riconoscere che, difatti, l'individuo che ha prodotto tali frequenze è lo stesso. Con un confronto tramite DTW ciò viene ovviato.\\
 \\
-L'algoritmo compie una ricerca nella matrice di distanza, di spazio $O(mn)$, dove $m$ ed $n$ sono le lunghezze delle due TS confrontate.\\
-Richiede, quindi, molto tempo al caso pessimo e in letteratura sono state definite alcune implementazioni veloci, come \textit{PrunedDTW}, \textit{SparseDTW} e \textit{FastDTW}, ma nonostante ciò, la tecnica resta complessa in tempo e spazio in caso di dataset ad alta dimensionalità.\\
+L'algoritmo compie una ricerca nella matrice di distanza, di spazio $O(mn)$, dove $m$ ed $n$ sono le lunghezze delle due TS confrontate.
+Dunque, al caso pessimo e con TS molto grandi (es. centinaia di punti), il calcolo del DTW richiede un tempo impraticabile. In letteratura, perciò, sono state definite alcune implementazioni veloci, come \textit{PrunedDTW}, \textit{SparseDTW} e \textit{FastDTW}, che tentano di accelerarne il calcolo. Ciò nonostante, la tecnica resta complessa in termini di tempo e di spazio, sopratutto in caso di dataset ad alta dimensionalità.\\
 
 \section{Confronto con k-Means di TSLearn}
-Tramite la libreria TSLearn è stato possibile effettuare il clustering \textbf{k-Means usando come metrica di distanza DTW} sulle TS originale, cioè non ridotte di dimensionalità.\\
-Il clustering viene fatto solo sui test set dagli autori dei dataset, questo perché il tempo richesto da DTW per calcolare le matrici di distanza di molte TS risulterebbe troppo alto.\\
+Il clustering mediante l'impiego di DWT è stato realizzato sfruttando la libreria TSLearn.
+Essa, infatti, come evidenziato dal nome stesso, consiste in una specializzazione del Machine Learning focalizzato sulle Time Series.
+La libreria non solo offre metodi per il calcolo delle metriche proprie delle TS (\textit{DTW},\textit{Soft-DTW}, ecc.), ma anche veri e propri algoritmi di Machine Learning in una variante modificata \textit{ad hoc} per le TS, sia di tipo supervised che unsupervised (es. \textit{SVM}, \textit{TimeSeriesKMeans}).\\
 \\
-+++ ALTRI DETTAGLI MANUEL++++\\
+Proprio uno di questi algoritmi, \textit{TimeSeriesKMeans}, è stato impiegato per il nostro esperimento. 
+Esso consiste in una versione modificata del noto algoritmo di clustering, abile nel calcolo dei cluster usando non solo la metrica euclidea, ma anche il DTW e il Soft-DTW.
 \\
 Di seguito sono riportati i risultati del clustering dei dataset in esame, con però alcune premesse:
 \begin{itemize}
-	\item Non è riportata il Silhouette Coefficient per tutti i dataset;
-	\item Non viene riportata la Relative Purity perché introdotta in un secondo momento, quando i risultati di TSLearn erano stati già calcolati e ricalcolarli avrebbe richiesto molto tempo;
-	\item Il k per k-Means è pari al numero di classi presenti nel dataset;
+	\item Il Silhouette Coefficient per tutti i dataset, data l'impraticabilità di calcolo su dataset di grandi dimenioni;
+	\item Non viene riportata la Relative Purity perché introdotta successivamente al calcolo di questi risultati, e una sua introduzione avrebbe richiesto un computo troppo oneroso;
+	\item Per avere un riscontro diretto con le labels presente nei dataset, il numero di cluster calcolati corrisponde al numero di classi presenti nel dataset;
 \end{itemize}
 
 \subsubsection{ECG5000}
