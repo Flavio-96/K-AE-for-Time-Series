@@ -1,11 +1,11 @@
 \section{Descrizione}
-Per affrontare questo problema sono stati selezionati alcuni dataset di time series dal sito \url{http://www.timeseriesclassification.com/dataset.php}.\\
-I dataset forniti dal sito sono già divisi in training e test set, ciascuno con un proprio numero di feature (ovvero la lunghezza della time series) uguale per tutti i sample.\\
-Ogni time series ha una sua \textbf{label}, corrispondente ad una classe di riferimento, assengata dall'autore del dataset.\\
+Per l'esperimento sono stati selezionati alcuni dataset di time series dal sito \url{http://www.timeseriesclassification.com/dataset.php}.\\
+Essi sono già divisi in training e test set, ciascuno con un proprio numero di feature (ovvero la lunghezza della time series) uguale per tutti i sample.\\
+Ogni time series ha una sua \textbf{label}, corrispondente ad una classe di riferimento, assegnata dall'autore del dataset.\\
 Sono stati scelti di diversi dimensioni e caratteristiche:
 \begin{itemize}
 	\item \textbf{ECG5000}, contenente 5000 elettrocardiogrammi (ECG) ottenuti da pazienti affetti da insufficienza cardiaca. Le classi sono state assegnati per annotazione automatica;
-	\item \textbf{ECG200}, contenente 200 elettrocardiogrammi ottenuti da pazienti affetti da insufficienza cardiaca. Le due classi rappresentano gli ECG di soggetti sani e di soggetti affetti da infarto al miocardio;
+	\item \textbf{ECG200}, contenente 200 elettrocardiogrammi ottenuti da pazienti affetti da insufficienza cardiaca. Le due classi rappresentano gli ECG di soggetti sani e di soggetti affetti da infarto del miocardio;
 	\item \textbf{ChlorineConcentration}, contenente dati relativi alla presenza di cloro nell'acqua, recuperati usando 166 sensori lungo una rete idraulica per 15 giorni;
 	\item \textbf{FordA}, contenente dati di rumori del motore di autovetture ottenuti sotto normali condizioni d'uso;
 	\item \textbf{FordB}, contenente dati di rumori del motore di autovetture, alcuni ottenuti sotto normali condizioni d'uso, mentre altri sotto condizioni di elevato rumore;
@@ -14,6 +14,13 @@ Sono stati scelti di diversi dimensioni e caratteristiche:
 	\item \textbf{TwoLeadECG}, contenente elettrocardiogrammi di due tipi diversi di segnale;
 	\item \textbf{TwoPatterns}, contenente serie temporali generate artificalmente, ciascuna caratterizzata da una coppia di pattern nel segnale: up-up, up-down, down-up e down-down.
 \end{itemize}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\linewidth]{ecg200.png}
+	\caption{Plot di alcune TS classificate in ECG200. Si nota facilmente che sebbene aggregate insieme, le TS della classe 2 non presentano andamenti simili.}
+	\label{fig:ecg200}
+\end{figure}
 
 \begin{table}[H]
 	\centering
@@ -68,6 +75,10 @@ Di seguito un riassunto della distribuzione delle classi di ciascun dataset (ind
 	\caption{Distribuzione delle classi dei dataset}
 	\label{tab:labels}
 \end{table}
+
+Com'è possibile notare dalla \figurename~\ref{fig:ecg200}, alcuni dataset presentano una classificazione che non è basata sull'andamento dei dati nel tempo, bensì su altre caratteristiche dei dati stessi (nel caso di ecg200 se i pazienti fossero sani o infartuati).
+Ciò necessariamente implica che un clustering effettuato basandosi unicamente sull'andamento della TS non potrà mai coincidere con una classificazione del genere.
+Ciò motiva, per alcuni dataset, uno score basso per metriche esterne.
 
 \subsection{Data Cleaning}
 Forte dei problemi individuati durante il profiling, sono state adottate alcune azioni correttive:
