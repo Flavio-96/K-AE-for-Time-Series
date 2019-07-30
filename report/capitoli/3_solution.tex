@@ -93,15 +93,15 @@ Il k-Means viene lanciato cinque volte, seguendo questa regola. Sia n il numero 
 	\item Se $n\leq3$, allora si esegue da $2-$Means a $6-$Means;
 	\item Se $n>2$, allora si esegue da $n-2-$Means ad $n+2-$Means.
 \end{enumerate}
-Ne viene lanciata l'implementazione di Scikit-Learn, retirata 100 volte (tramite il parametro $n\_init$) in modo tale che venga scelto il clustering migliore su 100 tentativi. Non viene fornito nessun random state in input.\\
+L'implementazione utilizzata è quella di Scikit-Learn, la quale viene retirata 100 volte (tramite il parametro $n\_init$), in modo tale che venga scelto il clustering migliore su 100 tentativi. Non viene fornito nessun random state in input.\\
 Il k-Means usa come funzione di distanza quella euclidea, che risulta accettabile poiché i vettori latenti non sono delle TS, quindi la distanza DTW non è pienamente adatta, oltre che dispendiosa in termini di computazione.\\
 \\
 Per ciascuna esecuzione di k-Means viene mostrato il plot del clustering sui sample di test. Le metriche di valutazione, sia interne che esterne, sono tutte accumulate in un DataFrame di Pandas, esportato successivamente in CSV.
 
 \subsection{Valutazione dei risultati}
-Il modello presenta molti iperparametri, quindi il setting non è stato immediato. Si è ricordo alla \textbf{random search} per poter trovare una buona combinazione di iperparametri.\\
-Per alcuni dataset, come ECG5000, ECG200, TwoLeadECG, PhalangesOutlineCorrect, ChlorineConcentration, questa ricerca ha portato miglioramenti in tutti gli score, mentre per gli altri dataset la ricerca non comportava alcun cambiamento sostanziale agli score.\\
-Di seguito sono riportati i risultati del clustering dei dataset in esame dopo aver fatto il setting degli iperapametri:
+Il modello presenta molti iperparametri, quindi il setting non è stato immediato. Si è ricorso alla \textbf{random search} per poter trovare una buona combinazione di iperparametri.\\
+Per alcuni dataset, come ECG5000, ECG200, TwoLeadECG, PhalangesOutlineCorrect, ChlorineConcentration, questa ricerca ha portato miglioramenti in tutti gli score, mentre per gli altri dataset la ricerca non comportava alcun cambiamento sostanziale.
+Di seguito sono riportati i risultati del clustering effettuato sui vari dataset in esame, con i valori migliori per gli iperapametri.
 
 \subsubsection{ECG5000}
 \begin{center}
