@@ -34,21 +34,21 @@ La similarità del DTW produce buoni risultati per le TS che rappresentano uno s
 Un individuo che pronuncia una stessa frase con lo stesso tono ma con velocità differente produrrebbe due TS molto differenti. Se esse venissero confrontate linearmente, non si potrebbe riconoscere che, difatti, l'individuo che ha prodotto tali frequenze è lo stesso. Con un confronto tramite DTW ciò viene ovviato.\\
 \\
 L'algoritmo compie una ricerca nella matrice di distanza, di spazio $O(mn)$, dove $m$ ed $n$ sono le lunghezze delle due TS confrontate.
-Dunque, al caso pessimo e con TS molto grandi (es. centinaia di punti), il calcolo del DTW richiede un tempo impraticabile. In letteratura, perciò, sono state definite alcune implementazioni veloci, come \textit{PrunedDTW}, \textit{SparseDTW} e \textit{FastDTW}, che tentano di accelerarne il calcolo. Ciò nonostante, la tecnica resta complessa in termini di tempo e di spazio, sopratutto in caso di dataset ad alta dimensionalità.\\
+Dunque, al caso pessimo e con TS molto grandi (es. centinaia di punti), il calcolo del DTW richiede un tempo troppo lungo per fornire risultati utili. In letteratura, perciò, sono state definite alcune implementazioni veloci, come \textit{PrunedDTW}, \textit{SparseDTW} e \textit{FastDTW}, che tentano di accelerarne il calcolo. Ciò nonostante, la tecnica resta complessa in termini di tempo e di spazio, sopratutto in caso di dataset ad alta dimensionalità.\\
 
 \section{Confronto con k-Means di TSLearn}
 Il clustering mediante l'impiego di DWT è stato realizzato sfruttando la libreria TSLearn.
-Essa, infatti, come evidenziato dal nome stesso, consiste in una specializzazione del Machine Learning focalizzato sulle Time Series.
-La libreria non solo offre metodi per il calcolo delle metriche proprie delle TS (\textit{DTW},\textit{Soft-DTW}, ecc.), ma anche veri e propri algoritmi di Machine Learning in una variante modificata \textit{ad hoc} per le TS, sia di tipo supervised che unsupervised (es. \textit{SVM}, \textit{TimeSeriesKMeans}).\\
+Essa, infatti, come evidenziato dal nome stesso, consiste in un set di funzionalità di  Machine Learning focalizzato sulle Time Series.
+La libreria non solo offre metodi per il calcolo delle metriche proprie delle TS (\textit{DTW},\textit{Soft-DTW}, ecc.), ma anche veri e propri algoritmi di Machine Learning, in una variante modificata \textit{ad hoc} per le TS, sia di tipo supervised che unsupervised (es. \textit{SVM}, \textit{TimeSeriesKMeans}).\\
 \\
 Proprio uno di questi algoritmi, \textit{TimeSeriesKMeans}, è stato impiegato per il nostro esperimento.
 Esso consiste in una versione modificata del noto algoritmo di clustering, abile nel calcolo dei cluster usando non solo la metrica euclidea, ma anche il DTW e il Soft-DTW.\\
 \\
-Di seguito sono riportati i risultati del clustering dei dataset in esame, con però alcune premesse:
+Di seguito sono riportati i risultati del clustering dei dataset in esame, a cui vanno anteposte alcune premesse:
 \begin{itemize}
-	\item Il Silhouette Coefficient non è presente in alcun dataset, data l'impraticabilità di calcolo su dataset di grandi dimenioni;
-	\item Non viene riportata la Relative Purity perché introdotta successivamente al calcolo di questi risultati, e una sua introduzione avrebbe richiesto un computo troppo oneroso;
-	\item Per avere un riscontro diretto con le labels presente nei dataset, il numero di cluster calcolati corrisponde al numero di classi presenti nel dataset;
+	\item Il Silhouette Coefficient non è presente in alcun dataset, data l'impraticabilità di calcolo su dataset di grandi dimensioni;
+	\item Non viene riportata la Relative Purity, in quanto introdotta successivamente al calcolo di questi risultati. Una sua valutazione su questi risultati avrebbe richiesto un computo troppo oneroso;
+	\item Per avere un riscontro diretto con le labels presenti nei dataset, il numero di cluster calcolati corrisponde al numero di classi presenti nel dataset;
 \end{itemize}
 
 \begin{center}
@@ -72,35 +72,36 @@ Di seguito sono riportati i risultati del clustering dei dataset in esame, con p
 
 Da questi risultati è possibile fare una serie di osservazioni:
 \begin{enumerate}
-	\item In \textit{ECG5000}, \textbf{l'autoencoder e TSLearn con 5-Means hanno tutti gli score molto simili}.\\
+	\item In \textit{ECG5000}, \textbf{l'autoencoder e TSLearn con 5-Means hanno tutti gli score molto simili}.
 	L'autoencoder è riuscito ad estrarre bene le caratteristiche degli elettrocardiogrammi, come intuito dall'analisi precedente;
 
-	\item In \textit{ECG200}, \textbf{l'autoencoder con 2-Means ha tutti gli score leggermente migliori rispetto a TSLearn}.\\
+	\item In \textit{ECG200}, \textbf{l'autoencoder con 2-Means ha tutti gli score leggermente migliori rispetto a TSLearn}.
 	Le motivazioni sono le stesse di ECG5000;
 
-	\item In \textit{ChlorineConcentration}, \textbf{l'autoencoder e TSLearn su 3-Means hanno tutti gli score molto simili}, se non per una leggera differenza per FMI.\\
+	\item In \textit{ChlorineConcentration}, \textbf{l'autoencoder e TSLearn su 3-Means hanno tutti gli score molto simili}, se non per una leggera differenza per FMI.
 	L'autoencoder è riuscito ad estrarre bene le caratteristiche di questo tipo di TS, cosa non intuita dall'analisi precedente;
 
-	\item In \textit{FordA}, \textbf{l'autoencoder con 2-Means ha tutti gli score ben peggiori rispetto a TSLearn}, ad eccezione del FMI, dove in entrambi i casi è comunque non ottimale.\\ L'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS "rumorose", come intuito dall'analisi precedente;
+	\item In \textit{FordA}, \textbf{l'autoencoder con 2-Means ha tutti gli score ben peggiori rispetto a TSLearn}, ad eccezione del FMI, in entrambi i casi non ottimale. L'autoencoder, dunque, non è riuscito ad estrarre bene le caratteristiche di queste TS "rumorose", come intuito dall'analisi precedente;
 
-	\item In \textit{FordB}, \textbf{l'autoencoder con 2-Means ha il DB ben peggiore di quelli di TSLearn}, mentre gli score esterni risultano simili.\\
+	\item In \textit{FordB}, \textbf{l'autoencoder con 2-Means ha il DB ben peggiore di quelli di TSLearn}, mentre gli score esterni risultano simili.
 	Similmente a FordA, l'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS, come intuito dall'analisi precedente;
 
-	\item In \textit{PhalangesOutlineCorrect}, \textbf{l'autoencoder con 2-Means ha qualche score leggermente peggiore rispetto a TSLearn}.\\
+	\item In \textit{PhalangesOutlineCorrect}, \textbf{l'autoencoder con 2-Means ha qualche score leggermente peggiore rispetto a TSLearn}.
 	L'autoencoder è riuscito ad estrarre abbastanza bene le caratteristiche di questo tipo di TS, magari c'è bisogno di alcune modifiche agli iperparametri per poter migliorarne la qualità;
 
-	\item In \textit{RefrigerationDevices}, \textbf{l'autoencoder con 3-Means ha tutti gli score ben peggiori rispetto a TSLearn}, ad eccezione del FMI, dove in entrambi i casi è comunque non ottimale.\\
+	\item In \textit{RefrigerationDevices}, \textbf{l'autoencoder con 3-Means ha tutti gli score ben peggiori rispetto a TSLearn}, ad eccezione del FMI, che in entrambi i casi è comunque non ottimale.
 	Quasi identicamente a FordA, l'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS "rumorose", come intuito dall'analisi precedente;
 
-	\item In \textit{TwoLeadECG}, \textbf{l'autoencoder e TSLearn con 2-Means hanno tutti gli score molto simili}, ad eccezione del DB dove l'autoencodere è migliore.\\
-	Questa analisi non è pienamente affidabile perché il test set fornito è troppo piccolo, quindi gli score sono soggetti a molte variazioni in caso di riesecuzioni.
+	\item In \textit{TwoLeadECG}, \textbf{l'autoencoder e TSLearn con 2-Means hanno tutti gli score molto simili}, ad eccezione del DB, dove l'autoencoder è migliore.
+	Questa analisi non è pienamente affidabile perché il test set fornito è troppo piccolo, quindi gli score sono soggetti a molte variazioni in caso di ulteriori esecuzioni.
 
-	\item In \textit{TwoPatterns}, \textbf{l'autoencoder con 4-Means ha tutti gli score ben peggiori rispetto a TSLearn}, ad eccezione del DB, dove resta comunque non ottimale.\\
+	\item In \textit{TwoPatterns}, \textbf{l'autoencoder con 4-Means ha tutti gli score ben peggiori rispetto a TSLearn}, ad eccezione del DB, che resta comunque non ottimale.\\
 	Similmente a FordA, l'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS "rumorose", come intuito dall'analisi precedente;
 \end{enumerate}
 
 \section{Confronto con altre tecniche di feature extraction and selection}
-Sono stati reperiti alcuni risultati di clustering sui dataset in esame attuando però altre tecniche di feature extraction and selection. Il clustering è stato fatto con k-Means con k pari al numero di classi del dataset e su un numero differente di feature estratte in modo diverso:
+Sono stati reperiti alcuni risultati di clustering sui dataset in esame attuando però altre tecniche di feature extraction and selection. Il clustering è stato fatto con k-Means con k pari al numero di classi del dataset e su un numero differente di feature estratte in modo diverso. 
+In particolare su:
 \begin{itemize}
 	\item \textbf{Tutte le feature estratte} da \textit{TSFresh};
 	\item \textbf{Feature rilevanti} selezionate da \textit{TSFresh};

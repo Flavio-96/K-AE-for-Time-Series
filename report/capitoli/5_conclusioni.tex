@@ -1,10 +1,10 @@
-\textbf{L'autoencoder è riuscito ad estrarre le principale caratteristiche dai dataset relativi agli elettrocardiogrammi}, ovvero ECG5000, ECG200 e TwoLeadECG.\\
-Per i dataset "rumorosi", quali FordA, FordB, RefrigerationDevices e TwoPatterns, i risultati sono stati abbastanza scadenti: l'autoencoder, così com'è preparato, non è stato in grado di cogliere le caratteristiche di queste TS.\\
+\textbf{L'autoencoder è riuscito ad estrarre le principale caratteristiche dai dataset relativi agli elettrocardiogrammi}, ovvero ECG5000, ECG200 e TwoLeadECG.
+Per i dataset "rumorosi", quali FordA, FordB, RefrigerationDevices e TwoPatterns, i risultati sono stati abbastanza scadenti: l'autoencoder, così com'è preparato, non è stato in grado di cogliere le caratteristiche di queste TS.
 Gli altri dataset, ChlorineConcetration e PhalangesOutlineCorrect, hanno dato risultati buoni, ma migliorabili con alcune modifiche agli iperaparametri del modello.\\
 \\
 Tutte le tecniche hanno avuto \textbf{difficoltà ad avere score interni alti per alcuni dataset}. Questo può essere causato dal fatto che alcuni dataset potrebbero essere densi, quindi molte TS risultano "vicine" nello spazio, andando a danneggiare compattezza e separazione dei cluster.\\
 Inoltre, k-Means è un algoritmo che minimizza la varianza intra-cluster piuttosto che massimizzare la densità dei cluster, quindi gli score come Davies-Bouldin non sono sempre ottimali essendo basati sulla densità.\\
 \\
-Tutte le tecniche hanno avuto \textbf{difficoltà ad avere score interni alti per alcuni dataset}. Questo può essere causato dal fatto che alcuni dataset hanno classi fortemente sbilanciate e/o classi con TS molto diverse tra loro, cosa che è stata notata durante la fase di data profiling.\\
+Tutte le tecniche hanno avuto \textbf{difficoltà ad avere score interni alti per alcuni dataset}. Questo può essere causato dal fatto che alcuni dataset hanno classi fortemente sbilanciate oppure classi con TS molto diverse tra loro, cosa che è stata notata durante la fase di data profiling.\\
 \\
-In generale, allora, gli score sono stati \textbf{utili per confrontare tra loro le diverse tecniche}, accomunate dall'algoritmi k-Means, \textbf{ma non sono molto utili per valutare la bontà in assoluto di una tecnica di clustering}.
+In generale, gli score sono stati \textbf{utili per confrontare tra loro le diverse tecniche}, accomunate dall'algoritmi k-Means, \textbf{ma non sono significativi al fine di valutare la bontà in assoluto di una tecnica di clustering}.
