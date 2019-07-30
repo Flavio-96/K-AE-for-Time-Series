@@ -46,7 +46,7 @@ Esso consiste in una versione modificata del noto algoritmo di clustering, abile
 \\
 Di seguito sono riportati i risultati del clustering dei dataset in esame, con però alcune premesse:
 \begin{itemize}
-	\item Il Silhouette Coefficient per tutti i dataset, data l'impraticabilità di calcolo su dataset di grandi dimenioni;
+	\item Il Silhouette Coefficient non è presente in alcun dataset, data l'impraticabilità di calcolo su dataset di grandi dimenioni;
 	\item Non viene riportata la Relative Purity perché introdotta successivamente al calcolo di questi risultati, e una sua introduzione avrebbe richiesto un computo troppo oneroso;
 	\item Per avere un riscontro diretto con le labels presente nei dataset, il numero di cluster calcolati corrisponde al numero di classi presenti nel dataset;
 \end{itemize}
@@ -58,7 +58,7 @@ Di seguito sono riportati i risultati del clustering dei dataset in esame, con p
 	every head row/.style={
 		before row={\hline
 			\multicolumn{3}{c|}{\textbf{}} &
-			\multicolumn{2}{c|}{Internal} & \multicolumn{3}{c}{External} \\
+			\multicolumn{1}{c|}{Internal} & \multicolumn{3}{c}{External} \\
 		},
 		after row=\hline
 	},
@@ -83,7 +83,7 @@ Da questi risultati è possibile fare una serie di osservazioni:
 
 	\item In \textit{FordA}, \textbf{l'autoencoder con 2-Means ha tutti gli score ben peggiori rispetto a TSLearn}, ad eccezione del FMI, dove in entrambi i casi è comunque non ottimale.\\ L'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS "rumorose", come intuito dall'analisi precedente;
 
-	\item In \textit{FordB}, \textbf{l'autoencoder con 2-Means ha gli score interni ben peggiori di quelli di TSLearn}, mentre quelli esterni sono simili.\\
+	\item In \textit{FordB}, \textbf{l'autoencoder con 2-Means ha il DB ben peggiore di quelli di TSLearn}, mentre gli score esterni risultano simili.\\
 	Similmente a FordA, l'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS, come intuito dall'analisi precedente;
 
 	\item In \textit{PhalangesOutlineCorrect}, \textbf{l'autoencoder con 2-Means ha qualche score leggermente peggiore rispetto a TSLearn}.\\
