@@ -1,3 +1,8 @@
+\section{Introduzione}
+In questo capitolo le sezioni \textbf{3.2} e \textbf{3.3} saranno introduttive agli elementi fondamentali che compongono l'architettura del modello proposto.\\
+La sezione \textbf{3.4} descrive l'approccio sviluppato e come lo si è utilizzato.\\
+La sezione \textbf{3.5}, infine, tratta dei risultati ottenuti.
+
 \section{RNN}
 Una TS è una \textbf{sequenza} di punti, ognuno di questi descrive il valore di una data variabile registrata in momenti diversi, solitamente, ad intervalli uniformi.\\
 Da questa definizione è facile intuire come i dati siano tra loro correlati, e non indipendenti, come spesso si assume in diverse tecniche di machine learning.\\
@@ -55,6 +60,31 @@ La cella LSTM non segue necessariamente lo schema suddetto, ed esistono altre va
 La \textbf{hidden size}, cioè dimensione dello stato nascosto, determina la dimensione dei quattro sotto-layer, ovvero il numero dei loro neuroni, quindi il numero totale dei neuroni presenti in una LSTM è dato dalla $hidden size * 4$. Tipicamente, al crescere della hidden size cresce anche la capacità di memorizzazione della LSTM.
 
 \section{Autoencoder}
+Un \textbf{autoencoder} è una tipologia di rete neurale che cerca di apprendere una rappresentazione "compressa" di un input, per poi ricostruirlo correttamente come output. Nonostante questo possa sembrare confusionario ed inutile, una rete che impara una versione compressa dei dati si presta in maniera ottimale a risolvere una serie di task che altrimenti non avrebbero soluzioni adeguate. Sostanzialmente quindi un autoencoder è un metodo per ottenere una rappresentazione di \textbf{dimensione ridotta} di un input di dimensionalità superiore. \\
+Un autoencoder prende i dati dall'input layer e li trasforma in una rappresentazione interna, detta \textbf{codifica} o \textbf{vettore latente}. Questa rappresentazione è ottima quando l'autoencoder riesce ad utilizzarlo per ricostruire correttamente l'input: il training consiste appunto nel cercare di costruire un vettore latente ottimale. Lo scopo finale non è quello di ricostruire perfettamente l'input (sarebbe abbastanza inutile) ma quello di estrarre dagli input una codifica contenente le loro principali caratteristiche. In altre parole, si pone di cercare feature rilevanti nell'input.\\
+La compressione e la decompressione dell'input vengono effettuate attraverso delle funzioni che imparano automaticamente senza l'ausilio dell'uomo (\textbf{unsupervised}) dagli esempi. In quasi tutti i contesti in cui sono usati gli autoencoder, le funzioni di compressione e decompressione sono implementare con reti neurali (nel nostro caso \textbf{LSTM}).\\
+\\
+Per compiere la ricostruzione è necessario che input e output layer siano della stessa dimensione, tuttavia, al fine di permettere alla rete di estrarre le feature dagli input, il layer nascosto dove sarà generata la codifica, detto \textbf{coding layer}, dovrà necessariamente essere di dimensione minore degli input e output layer. Si parla di autoencoder \textbf{undercomplete}.\\
+\\
+Come detto un autoencoder è sempre composto da:
+\begin{itemize}
+	\item Un \textbf{encoder}, solitamente una rete neurale che riduce l'input nella codifica. Anche detta \textit{rete ricognitica};
+	\item Un \textbf{decoder}, solitamente una rete neurale che ricostruisce l'input dell'encoder a partire dalla codifica. Anche detta \textit{rete generativa};
+\end{itemize}
+Encoder e decoder sono simmetrici rispetto al coding layer.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{autoencoder.png}
+	\caption{Schema di un autoencoder.}
+	\label{fig:autoencoder}
+\end{figure}
+Gli autoencoder sono usati principalmente per fare \textbf{dimensionality reduction}, dato che la codifica è una rappresentazione ridotta di ogni input, ma anche \textbf{generazione di sample}, ovvero generare nuovi dati a partire da codifiche arbitrarie.\\
+\\
+Come una qualsiasi altra rete neurale, gli autoencoder possono essere resi più profondi aggiungendo layer nascosti, sia dal lato dell'encoder che dal lato del decoder. In tal caso si parla di \textbf{autoencoder stacked}.\\
+In generale, un maggior livello di profondità permette alla rete di comprendere pattern più complessi, tuttavia una profondità troppo alta rende il rischio di overfitting più alto.
+
+\subsection{Variational Autoencoders}
+
 Un \textbf{autoencoder} è un rete neurale capace di apprendere caratteristiche da dati di training non etichettati, quindi in modo non supervisionato.\\
 Un autoencoder prende i dati dall'input layer e li trasforma in una rappresentazione interna, detta \textbf{codifica} o \textbf{vettore latente}, da riusare per tentare di ricostruire l'input e mandarlo sull'output layer.\\
 Lo scopo finale non è quello di ricostruire perfettamente l'input (sarebbe abbastanza inutile) ma quello di estrarre dagli input una codifica contenente le loro principali caratteristiche. In altre parole, si pone di cercare feature rilevanti nell'input.\\
