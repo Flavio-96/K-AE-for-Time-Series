@@ -1,14 +1,16 @@
 \section{RNN}
-Una TS è una \textbf{sequenza} di dati dispiegata nel tempo. I dati sono tra loro correlati, quindi per una classica rete neurale bisognerebbe creare un input layer di dimensione pari alla lunghezza della TS in modo tale che la rete si alleni su una time series alla volta.\\
-Essendo che le TS non sono quasi mai tutte della stessa lunghezza, bisognerebbe definire una rete differente per ogni tipologie di TS. Inoltre, l'input layer crescerebbe troppo.\\
+Una TS è una \textbf{sequenza} di punti, ognuno di questi descrive il valore di una data variabile registrata in momenti diversi, solitamente, ad intervalli uniformi.\\
+Da questa definizione è facile intuire come i dati siano tra loro correlati, e non indipendenti, come spesso si assume in diverse tecniche di machine learning.\\
+Gli approcci tradizionali quindi peccano da questo punto di vista, e difficile è l'analisi anche per il fatto che le serie possono avere lunghezze diverse in base al numero di osservazioni fatte. Per una classica rete neurale, ad esempio, bisognerebbe adattare l'input layer in modo da allinearsi alla lunghezza della TS e dovrebbe anche tenere conto della correlazione di osservazioni temporalmente vicine.\\
 \\
-Un'idea potrebbe essere quella di lanciare diverse istanze della medesima rete neurale affinché ciascuna operi su porzioni diverse della serie, per poi mettere insieme i risultati, riprendendo un po' l'idea di un ensemble. \\
-Questa soluzione, per quanto semplice, non funziona bene con sequenze di dati, poiché i dati sono tra loro correlati nel tempo: ogni valore nel tempo $t$ è legato al valore nel tempo $t-1$. Con questa soluzione le reti si addestrano su sottosequenze indipendenti della stessa TS, perdendo le correlazioni esistenti.\\
+Soluzioni provate in letterature (con poco successo) prevedono che si utilizzino  diverse istanze della stessa rete neurale affinché ciascuna operi su porzioni diverse della serie, per poi unire i risultati, riprendendo un po' l'idea di un ensemble. \\
+Questa soluzione, per quanto semplice, non funziona bene con sequenze di dati, poiché, come detto, i dati sono tra loro correlati nel tempo: ogni valore nel tempo $t$ è legato al valore nel tempo $t-1$. Con questa soluzione le reti si addestrano su sottosequenze indipendenti della stessa TS, ma si perdono le correlazioni esistenti.\\
 \\
-Una \textbf{rete neurale ricorrente} (Recurrent Neural Network, RNN) è in grado di tenere memoria della sottosequenza analizzata nel passato e di prendere decisioni in funzione di esse.\\
-Una RNN usa l'output del layer ricorrente come input dello stesso per certo numero di volte. Tra una ripetizione e l'altra i pesi calcolati dall'algoritmo di training sono conservati, così da tenere la memoria della sottosequenza di dati visti precedentemente.\\
+Il concetto dunque è quello che è necessario non perdere informazione su quello che già si  sa. Questo approccio ricorda quello umano di non lasciare che i pensieri vengano generati partendo dal nulla, ma che siano determinati a partire dal passato, cioé da quello che si sa. Una \textbf{rete neurale ricorrente} (Recurrent Neural Network, RNN) è proprio questo che fa: rispetto una rete neurale consueta non ha archi che fluiscono in un'unica direzione, dall'input all'output, ma questi possono anche "tornare indietro".
+Nel nostro caso in questo modo risolviamo il problema di dover tenere memoria delle sottosequenze della serie temporale analizzate nel passato e di prendere decisioni in funzione di esse.\\
+Una RNN usa l'output del "layer ricorrente" come input dello stesso per un certo numero di iterazioni. Tra una ripetizione e l'altra il risultato degli input precedenti va a condizionare quelli successivi, così da tenere la memoria della sottosequenza di dati visti precedentemente e mantenere la correlazione, il legame.\\
 I pesi che evolvono nel tempo formano il cosiddetto \textit{hidden state}. Questa tecnica viene chiamata \textbf{parameter sharing}.\\
-La dimensione del layer ricorrente è fissata e andrà a determinare, chiaramente, le dimensioni dell'input e dell'output, e corrisponderà alla dimensione della sottosequenza che si desidera analizzare ad ogni passo.
+La dimensione del layer ricorrente è fissata e andrà a determinare le dimensioni dell'input e dell'output, e corrisponderà alla dimensione della sottosequenza che si desidera analizzare ad ogni passo.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{rnn.png}
