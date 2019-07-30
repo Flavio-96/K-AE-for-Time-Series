@@ -1,12 +1,12 @@
 \section{DTW: Dynamic Time Warping}
 Il \textbf{Dynamic Time Warping} (DTW)\cite{dtw}è un algoritmo per misurare la similarità tra due TS, calcolandone il match ottimale.\\
 \\
-A differenza delle classiche funzioni di distanza, come quella Euclidea o la Manhattan, essa effettua un confronto di tipo \textbf{elastico} (non-lineare) tra i punti delle due TS a confronto: Esse non sono confrontate 1-a-1, matchando l'$i$-esimo punto della TS A con l'$i$-esimo punto della TS B, bensì 1-a-n, matchando un punto della TS A con uno o più punti della TS B.\\
+A differenza delle classiche funzioni di distanza, come quella Euclidea o la Manhattan, essa effettua un confronto di tipo \textbf{elastico} (non-lineare) tra i punti delle due TS a confronto: esse non sono confrontate 1-a-1, matchando l'$i$-esimo punto della TS A con l'$i$-esimo punto della TS B, bensì 1-a-n, matchando un punto della TS A con uno o più punti della TS B.\\
 Il confronto tra due punti matchati avviene sempre con una metrica classica, come quella Euclidea. Tutte le singole distanze tra i punti sono conservate in una \textbf{matrice di distanza}.\\
 \\
-Siano A e B due TS a confronto, vengono imposti i seguenti vincoli nel clacolo del DTW:
+Siano A e B due TS a confronto, vengono imposti i seguenti vincoli nel calcolo del DTW:
 \begin{itemize}
-	\item Un punto di una TS può essere matchato con uno o più punti dell'altra TS;
+	\item Un punto di una TS A può essere matchato con uno o più punti della TS B;
 	\item Il match tra due punti può avviene se e solo se le due TS hanno la stessa monotonia nei rispettivi punti;
 	\item Il primo punto della TS A è matchato con il primo della TS B;
 	\item L'ultimo punto della TS A è matchato con l'ultimo della TS B; 
@@ -46,9 +46,9 @@ Esso consiste in una versione modificata del noto algoritmo di clustering, abile
 \\
 Di seguito sono riportati i risultati del clustering dei dataset in esame, a cui vanno anteposte alcune premesse:
 \begin{itemize}
-	\item Il Silhouette Coefficient non è presente in alcun dataset, data l'impraticabilità di calcolo su dataset di grandi dimensioni;
-	\item Non viene riportata la Relative Purity, in quanto introdotta successivamente al calcolo di questi risultati. Una sua valutazione su questi risultati avrebbe richiesto un computo troppo oneroso;
-	\item Per avere un riscontro diretto con le labels presenti nei dataset, il numero di cluster calcolati corrisponde al numero di classi presenti nel dataset;
+	\item \textbf{Il Silhouette Coefficient non è presente in alcun dataset}, data l'impraticabilità di calcolo del DTW su dataset di grandi dimensioni;
+	\item \textbf{Non viene riportata la Relative Purity}, in quanto introdotta successivamente al calcolo di questi risultati. Una sua valutazione su questi risultati avrebbe richiesto un computo troppo oneroso;
+	\item Per avere un riscontro diretto con le label presenti nei dataset, \textbf{il numero di cluster calcolati corrisponde al numero di classi presenti nel dataset};
 \end{itemize}
 
 \begin{center}

@@ -1,5 +1,5 @@
-Con questo esperimento si è voluto valutare diverse tecniche di clustering su Time Series, andando a verificare come tecniche di feature extraction e feature selection potessero influenzare (sia in positivo che in negativo) i risultati dei clustering.
-A tal fine si sono confrontate due diverse tecniche di feature extraction/selection (tsfresh ed autoencoder) e si sono confrontati con un clustering applicato su time series pure, applicando la dovuta metrica di distanza (DTW e K-Means con TSLearn).
+Con questo esperimento si è voluto valutare diverse tecniche di clustering su Time Series, andando a verificare come tecniche di feature extraction and selection potessero influenzare (sia in positivo che in negativo) i risultati dei clustering.
+A tal fine si sono confrontate due diverse tecniche di feature extraction/selection (TSFresh ed autoencoder) e si sono confrontati con un clustering applicato su time series pure, applicando la dovuta metrica di distanza (k-Means con DTW di TSLearn).
 I risultati ottenuti ci permettono di formulare varie considerazioni.\\ 
 \\
 Innanzitutto, \textbf{L'autoencoder è riuscito ad estrarre le principale caratteristiche dai dataset relativi agli elettrocardiogrammi}, ovvero ECG5000, ECG200 e TwoLeadECG.
@@ -11,7 +11,7 @@ Inoltre, k-Means è un algoritmo che minimizza la varianza intra-cluster piuttos
 \\
 Tutte le tecniche hanno avuto \textbf{difficoltà ad avere score interni alti per alcuni dataset}. Questo può essere causato dal fatto che alcuni dataset hanno classi fortemente sbilanciate oppure classi con TS molto diverse tra loro, cosa che è stata notata durante la fase di data profiling.\\
 \\
-Si è verificato, inoltre, che per i vari clustering calcolati sui vettori latenti estratti dall'autoencoder, si ottenevano \textbf{metriche di qualità interne migliori} per un\textbf{ numero di cluster basso} (2,3), mentre per valori di cluster alti (5,6) essi peggioravano.
-Tale andamento, seppur in maniera più ridotta, si è riscontrato anche per le metriche esterne.\\
+Si è verificato, inoltre, che per i vari clustering calcolati sui vettori latenti estratti dall'autoencoder, si ottenevano \textbf{misure di qualità interne migliori} per un\textbf{numero di cluster basso}, come due o tre, mentre per valori di cluster alti, come cinque o sei, esse peggioravano.
+Tale andamento, seppur in maniera più ridotta, si è riscontrato anche per le misure esterne.\\
 \\ 
-In generale, gli score sono stati \textbf{utili per confrontare tra loro le diverse tecniche}, accomunate dall'algoritmi k-Means, \textbf{ma non sono significativi al fine di valutare la bontà in assoluto di una tecnica di clustering}.
+In generale, gli score sono stati \textbf{utili per confrontare tra loro le diverse tecniche}, accomunate dall'algoritmo k-Means, \textbf{ma non sono significativi al fine di valutare la bontà in assoluto di una tecnica di clustering}.
