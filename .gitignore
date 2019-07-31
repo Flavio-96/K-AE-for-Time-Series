@@ -26,7 +26,6 @@ jupyter/\.ipynb_checkpoints/Autoencoder_for_time_series-checkpoint\.ipynb
 *.mtc1
 *.out
 *.synctex.gz
-*.pdf
 *.run.xml
 *.bcf
 
