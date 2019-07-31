@@ -1,15 +1,15 @@
 Con questo esperimento si è voluto valutare diverse tecniche di clustering su Time Series, andando a verificare come tecniche di feature extraction and selection potessero influenzare (sia in positivo che in negativo) i risultati dei clustering.
-A tal fine si sono confrontate due diverse tecniche di feature extraction/selection (TSFresh ed autoencoder) e si sono confrontati con un clustering applicato su time series pure, applicando la dovuta metrica di distanza (k-Means con DTW di TSLearn).
+A tal fine si sono confrontate due diverse tecniche di feature extraction/selection (TSFresh ed autoencoder) e si sono confrontati con un clustering applicato su time series pure, mediante la dovuta metrica di distanza (k-Means con DTW di TSLearn).
 I risultati ottenuti ci permettono di formulare varie considerazioni.\\ 
 \\
-Innanzitutto, \textbf{L'autoencoder è riuscito ad estrarre le principale caratteristiche dai dataset relativi agli elettrocardiogrammi}, ovvero ECG5000, ECG200 e TwoLeadECG.
-Per i dataset "rumorosi", quali FordA, FordB, RefrigerationDevices e TwoPatterns, i risultati sono stati abbastanza scadenti: l'autoencoder, così com'è preparato, non è stato in grado di cogliere le caratteristiche di queste TS.
+Innanzitutto, \textbf{l'autoencoder si è mostrato particolarmenre efficace ad estrarre le principali caratteristiche dai dataset relativi agli elettrocardiogrammi}, ovvero ECG5000, ECG200 e TwoLeadECG.
+Per i dataset "rumorosi", quali FordA, FordB, RefrigerationDevices e TwoPatterns, i risultati sono stati abbastanza scadenti: allo stato attuale, il nostro modello non è stato in grado di cogliere le caratteristiche di queste TS.
 Gli altri dataset, ChlorineConcetration e PhalangesOutlineCorrect, hanno dato risultati buoni, ma migliorabili con alcune modifiche agli iperaparametri del modello.\\
 \\
-Tutte le tecniche hanno avuto \textbf{difficoltà ad avere score interni alti per alcuni dataset}. Questo può essere causato dal fatto che alcuni dataset potrebbero essere densi, quindi molte TS risultano "vicine" nello spazio, andando a danneggiare compattezza e separazione dei cluster.\\
-Inoltre, k-Means è un algoritmo che minimizza la varianza intra-cluster piuttosto che massimizzare la densità dei cluster, quindi gli score come Davies-Bouldin non sono sempre ottimali essendo basati sulla densità.\\
+Tutte le tecniche hanno presentato \textbf{difficoltà nell'ottenere score interni alti per alcuni dataset}. Questo può essere causato dal fatto che alcuni dataset potrebbero essere densi, quindi molte TS risultano "vicine" nello spazio, andando a danneggiare compattezza e separazione dei cluster.\\
+Inoltre, k-Means è un algoritmo che minimizza la varianza intra-cluster piuttosto che massimizzare la densità dei cluster, quindi gli score come Davies-Bouldin non sono sempre ottimali, essendo basati proprio sulla densità.\\
 \\
-Tutte le tecniche hanno avuto \textbf{difficoltà ad avere score interni alti per alcuni dataset}. Questo può essere causato dal fatto che alcuni dataset hanno classi fortemente sbilanciate oppure classi con TS molto diverse tra loro, cosa che è stata notata durante la fase di data profiling.\\
+Tutte le tecniche hanno riscontrato \textbf{dei limiti nella massimizzazione di score esterni per alcuni dataset}. Questo può essere causato dal fatto che alcuni dataset presentano classi fortemente sbilanciate, oppure classi con TS molto diverse tra loro, cosa che è stata notata durante la fase di data profiling.\\
 \\
 Si è verificato, inoltre, che per i vari clustering calcolati sui vettori latenti estratti dall'autoencoder, si ottenevano \textbf{misure di qualità interne migliori} per un\textbf{numero di cluster basso}, come due o tre, mentre per valori di cluster alti, come cinque o sei, esse peggioravano.
 Tale andamento, seppur in maniera più ridotta, si è riscontrato anche per le misure esterne.\\

@@ -120,7 +120,7 @@ Durante il training è stato necessario lavorare sui tanti \textbf{iperparametri
 \begin{itemize}
 	\item \textbf{Number of layers}, indicante il numero di LSTM messe in stack. E' stato scelto 2 per tutti i dataset, per evitare di dare troppa complessità al modello;
 	
-	\item \textbf{Hidden size}, indicante la dimensione dell'hidden state, e quindi della singola cella LSTM. E' stato scelto \textbf{un valore dipendente dalla tipologia di time series: valori minori se esse avevano andamenti tendenzialmente lineari, altrimenti meggiori.}, così da avere migliori capacità di memorizzazione;
+	\item \textbf{Hidden size}, indicante la dimensione dell'hidden state, e quindi della singola cella LSTM. E' stato scelto \textbf{un valore dipendente dalla tipologia di time series: valori minori se esse avevano andamenti tendenzialmente lineari, altrimenti maggiori.}, così da avere migliori capacità di memorizzazione;
 	
 	\item \textbf{Vector size}, indicante la dimensione dei vettori latenti. E' stato scelto \textbf{un valore proporzionato alla lunghezza delle time series dei diversi dataset}, così da avere buone capacità di compressione;
 	

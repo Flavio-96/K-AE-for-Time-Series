@@ -59,7 +59,7 @@ Sono emerse alcune informazioni interessanti:
 	\item Le dimensioni di training e test set sono sbilanciate e con una cattiva distribuzione delle TS rispetto alle diverse classi.
 \end{itemize}
 Lo sbilanciamento è stato individuato facendo il \textbf{raggruppamento rispetto alla colonna 0}, ovvero quella relativa alle label assegnate alle TS, mentre gli outlier sono stati individuati \textbf{guardando la media, la deviazione standard e i quartili di ciascuna colonna}, oltre che il plot dei dati.\\
-L'assenza di valori null è stata possibile grazie al conteggio dei valori null di Pandas.\\
+L'assenza di valori null è stata riscontrata grazie al conteggio dei valori null di Pandas.\\
 \\
 Di seguito un riassunto della distribuzione dei valori nelle classi di ciascun dataset (il numero associato ad ogni classe non rispecchia l'effetivo valore delle label):
 \begin{table}[H]
@@ -86,7 +86,7 @@ Questo implica necessariamente che un clustering effettuato basandosi unicamente
 Questo aspetto verrà tenuto conto durante le valutazioni dei risultati.
 
 \subsection{Data cleaning and preparation} \label{sec:cleaning}
-Forte dei problemi individuati durante il data profiling, sono state adottate alcune azioni correttive:
+In risposta ai problemi individuati durante la fase di data profiling, sono state adottate alcune azioni correttive:
 \begin{itemize}
 	\item Tutte \textbf{le label sono state modificate} in modo tale da essere degli \textbf{interi positivi che partono da 1 e che si incrementano unariamente}, rispecchiando la numerazione presente nella tabella \ref{tab:labels}.\\
 	Questa pulizia è stata fatta direttamente sui file dei dataset;

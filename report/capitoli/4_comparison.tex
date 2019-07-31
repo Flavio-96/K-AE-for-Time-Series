@@ -1,4 +1,8 @@
-\section{DTW: Dynamic Time Warping}
+Di seguito, il lavoro di features extraction dell'autoencoder verrà messo alla prova, confrontandolo con due approcci differenti. Nella sezione \ref{sec:dtw} verrà descritto il Dynamic Time Warping e come viene utilizzato in ambito ML. Nella sezione \ref{sec:tslearn} verrà, poi, comparato il risultato del clustering effettuato usando le features estratte dall'autoencoder con il clustering effettuato usando Dynamic Time Warping. Infine, i risultati dell'autoencoder verranno comparati, nella sezione \ref{sec:tsf}, con quelli ottenuti estraendo e selezionando fetures con altre tecniche (es. \textit{TSFresh}).
+
+
+\section{DTW: Dynamic Time Warping}\label{sec:dtw}
+
 Il \textbf{Dynamic Time Warping} (DTW)\cite{dtw}è un algoritmo per misurare la similarità tra due TS, calcolandone il match ottimale.\\
 \\
 A differenza delle classiche funzioni di distanza, come quella Euclidea o la Manhattan, essa effettua un confronto di tipo \textbf{elastico} (non-lineare) tra i punti delle due TS a confronto: esse non sono confrontate 1-a-1, matchando l'$i$-esimo punto della TS A con l'$i$-esimo punto della TS B, bensì 1-a-n, matchando un punto della TS A con uno o più punti della TS B.\\
@@ -36,7 +40,7 @@ Un individuo che pronuncia una stessa frase con lo stesso tono ma con velocità 
 L'algoritmo compie una ricerca nella matrice di distanza, di spazio $O(mn)$, dove $m$ ed $n$ sono le lunghezze delle due TS confrontate.
 Dunque, al caso pessimo e con TS molto grandi (es. centinaia di punti), il calcolo del DTW richiede un tempo troppo lungo per fornire risultati utili. In letteratura, perciò, sono state definite alcune implementazioni veloci, come \textit{PrunedDTW}, \textit{SparseDTW} e \textit{FastDTW}, che tentano di accelerarne il calcolo. Ciò nonostante, la tecnica resta complessa in termini di tempo e di spazio, sopratutto in caso di dataset ad alta dimensionalità.\\
 
-\section{Confronto con k-Means di TSLearn}
+\section{Confronto con k-Means di TSLearn}\label{sec:tslearn}
 Il clustering mediante l'impiego di DWT è stato realizzato sfruttando la libreria TSLearn.
 Essa, infatti, come evidenziato dal nome stesso, consiste in un set di funzionalità di  Machine Learning focalizzato sulle Time Series.
 La libreria non solo offre metodi per il calcolo delle metriche proprie delle TS (\textit{DTW},\textit{Soft-DTW}, ecc.), ma anche veri e propri algoritmi di Machine Learning, in una variante modificata \textit{ad hoc} per le TS, sia di tipo supervised che unsupervised (es. \textit{SVM}, \textit{TimeSeriesKMeans}).\\
@@ -99,7 +103,7 @@ Da questi risultati è possibile fare una serie di osservazioni:
 	Similmente a FordA, l'autoencoder non è riuscito ad estrarre bene le caratteristiche di queste TS "rumorose", come intuito dall'analisi precedente;
 \end{enumerate}
 
-\section{Confronto con altre tecniche di feature extraction and selection}
+\section{Confronto con altre tecniche di feature extraction and selection}\label{sec:tsf}
 Sono stati reperiti alcuni risultati di clustering sui dataset in esame attuando però altre tecniche di feature extraction and selection. Il clustering è stato fatto con k-Means con k pari al numero di classi del dataset e su un numero differente di feature estratte in modo diverso. 
 In particolare su:
 \begin{itemize}
