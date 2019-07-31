@@ -27,6 +27,3 @@ Time series are **not multivariate**
 - ChorelineConcetration
 - refrigerationDevice
 - TwoLeadECG
-
-## Feature selection in unsupervised learning
-[scikit-feature](https://github.com/jundongl/scikit-feature)
