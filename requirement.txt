@@ -1,14 +1,10 @@
 jupyter
-tsfresh
 matplotlib
 numpy
 pandas
-Pillow
 scikit-learn
 scipy
-six
 sklearn
 tensorflow
 tensorflow_probability
 dtaidistance
-nbmultitask
