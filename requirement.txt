@@ -8,4 +8,7 @@ sklearn
 tensorflow
 tensorflow_probability
 dtaidistance
+<<<<<<< HEAD
 tslearn
+=======
+>>>>>>> master
